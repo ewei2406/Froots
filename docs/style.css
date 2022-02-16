@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'FiraBold';
+    src: url('assets/fonts/FiraCode-Bold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'FiraRegular';
+    src: url('assets/fonts/FiraCode-Regular.woff') format('woff');
+}
+
+canvas {
+    border: 1px solid black;
+    image-rendering: crisp-edges;
+    width: 500px;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
