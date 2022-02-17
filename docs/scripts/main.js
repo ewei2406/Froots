@@ -1,14 +1,8 @@
+import Canvas from "./canvas.js";
 class App {
-    constructor(canvasId) {
+    constructor() {
+        this.display = new Canvas("gameDisplay", 1080, 1080);
         console.log("Working!");
-        this.canvas = document.getElementById(canvasId);
-        this.canvas.oncontextmenu = e => { e.preventDefault(); e.stopPropagation(); };
-        this.ctx = this.canvas.getContext("2d");
-        this.ctx.imageSmoothingEnabled = false;
-        this.canvas.autofocus = true;
-        this.canvas.width = 500;
-        this.canvas.height = 500;
     }
 }
-new App("gameDisplay");
-export {};
+new App();
