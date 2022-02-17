@@ -7,9 +7,9 @@ export class UiObject {
         this.h = h;
     }
     draw(canvas) {
-        this.drawBoundingBox(canvas);
+        canvas.fillRect(this.x, this.y, this.w, this.h, Colors.RED);
     }
     drawBoundingBox(canvas) {
-        canvas.fillRect(this.x, this.y, this.w, this.h, Colors.RED);
+        canvas.strokeRect(this.x, this.y, this.w, this.h, Colors.GREEN, 1);
     }
 }

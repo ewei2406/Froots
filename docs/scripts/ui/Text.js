@@ -25,6 +25,6 @@ export class TextObject extends UiObject {
 }
 export class Heading extends TextObject {
     constructor(text, x, y, canvas) {
-        super(text, x, y, 70, "arial", Colors.BLUE, canvas, 30);
+        super(text, x, y, 70, "Richland", Colors.BLUE, canvas, 30);
     }
 }

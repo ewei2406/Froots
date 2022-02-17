@@ -1,6 +1,5 @@
 export default class Screen {
     constructor(canvas) {
-        console.log("Screen created");
         this.canvas = canvas;
         this.UiObjects = [];
     }

@@ -38,4 +38,10 @@ export default class Canvas {
         this.ctx.fillStyle = color.toString()
         this.ctx.fillRect(x, y, w, h)
     }
+
+    public strokeRect(x: number, y: number, w: number, h: number, color: Color, lineWidth = 5) {
+        this.ctx.strokeStyle = color.toString()
+        this.ctx.lineWidth = lineWidth
+        this.ctx.strokeRect(x, y, w, h)
+    }
 }

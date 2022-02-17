@@ -1,13 +1,12 @@
 import Canvas from "./Canvas.js";
 import { UiObject } from "./ui/UiObject.js";
 
-export default class Session {
+export default class Screen {
 
     UiObjects: Array<UiObject>
     canvas: Canvas
 
     constructor(canvas: Canvas) {
-        console.log("Session created");
         this.canvas = canvas
         this.UiObjects = []
     }

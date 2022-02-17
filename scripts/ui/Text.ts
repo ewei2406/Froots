@@ -25,6 +25,7 @@ export class TextObject extends UiObject {
 
     calcSize(canvas: Canvas) {
         canvas.ctx.font = this.size + "px " + this.font
+        
         const c = canvas.ctx.measureText(this.text)
         this.w = c.width + this.padding * 2
         this.h = c.actualBoundingBoxAscent + c.actualBoundingBoxDescent + this.padding * 2
@@ -44,6 +45,6 @@ export class TextObject extends UiObject {
 
 export class Heading extends TextObject {
     constructor(text: string, x: number, y: number, canvas: Canvas) {
-        super(text, x, y, 70, "arial", Colors.BLUE, canvas, 30)
+        super(text, x, y, 70, "Richland", Colors.BLUE, canvas, 30)
     }
 }

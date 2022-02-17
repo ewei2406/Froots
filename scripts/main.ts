@@ -1,36 +1,39 @@
 import Canvas from "./Canvas.js"
 import { UiObject } from "./ui/UiObject.js";
-import Session from "./Session.js";
+import Screen from "./Screen.js";
 import { Heading } from "./ui/Text.js";
 import Fontloader from "./Font.js";
-import { timeStamp } from "console";
 
-
-enum State {
-
+const enum State {
+    TITLE=0
 }
+
 class App {
 
     fontloader: Fontloader
+    debug = true
+    canvas: Canvas
     timer: any
 
+    screens = {}
+    state = State.TITLE
+
     main() {
-        const canvas = new Canvas("gameDisplay", 1080, 1080)
-        const session = new Session(canvas)
+        this.canvas = new Canvas("gameDisplay", 1080, 1080)
+
+        // Make the screens
+
+        const titleScreen = new Screen(this.canvas)
 
         const box = new UiObject(100, 100, 200, 100)
-        const text = new Heading("Alww", 300, 200, canvas)
+        const text = new Heading("Froots", 300, 200, this.canvas)
 
-        session.addUiObject(box)
-        session.addUiObject(text)
+        titleScreen.addUiObject(box)
+        titleScreen.addUiObject(text)
 
-        this.fontloader = new Fontloader("fff", "richland")
+        this.screens[State.TITLE] = titleScreen
 
-        session.drawBoundingBoxes()
-        session.draw()
-
-        const res = this.fontloader.isReady()
-        console.log(res);
+        
         
         const self = this;
         this.timer = setInterval(() => self.tick(), 1000 / 30)
@@ -38,11 +41,19 @@ class App {
 
     tick() {
         console.log("Tick!");
-        
-        const res = this.fontloader.isReady()
-        console.log(res);
+        this.canvas.clear()
+        this.screens[this.state].draw()
     }
 }
+
+
+const fontloader = new Fontloader("fff", "richland")
+const wait = setInterval(() => {
+    if (fontloader.isReady()) { 
+        clearInterval(wait)
+        console.log("Loaded!");
+    }
+}, 1000 / 10)
 
 const app = new App()
 app.main()
