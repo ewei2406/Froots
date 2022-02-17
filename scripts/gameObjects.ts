@@ -7,4 +7,5 @@ export interface gameObject {
     w: number
     h: number
     draw(canvas: Canvas)
+    drawBoundingBox(canvas: Canvas)
 }

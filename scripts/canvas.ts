@@ -2,8 +2,8 @@ import { Color } from "./Color.js"
 
 export default class Canvas {
 
-    private canvas: HTMLCanvasElement
-    private ctx: CanvasRenderingContext2D
+    public canvas: HTMLCanvasElement
+    public ctx: CanvasRenderingContext2D
 
     public id: string
     public width: number

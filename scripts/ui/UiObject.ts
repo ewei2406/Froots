@@ -16,6 +16,10 @@ export class UiObject implements gameObject {
     }
 
     draw(canvas: Canvas) {
-        canvas.fillRect(this.x, this.y, this.w, this.h, Colors.Red)
+        this.drawBoundingBox(canvas)
+    }
+
+    drawBoundingBox(canvas: Canvas) {
+        canvas.fillRect(this.x, this.y, this.w, this.h, Colors.RED)
     }
 }
