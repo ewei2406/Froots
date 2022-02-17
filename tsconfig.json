@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs"
+    "module": "es6",
+    "outDir": "./docs/scripts",
+    "rootDir": "./scripts"
   }
 }
