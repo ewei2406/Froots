@@ -1,4 +1,4 @@
-import { Color } from "./color.js"
+import { Color } from "./Color.js"
 
 export default class Canvas {
 

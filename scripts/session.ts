@@ -1,5 +1,5 @@
-import Canvas from "./canvas";
-import { UiObject } from "./gameObjects"
+import Canvas from "./Canvas.js";
+import { UiObject } from "./ui/UiObject.js";
 
 export default class Session {
 

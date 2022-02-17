@@ -1,4 +1,4 @@
-export class rgbColor {
+export class RgbColor {
     constructor(r, g, b) {
         this.r = r;
         this.g = g;
@@ -8,7 +8,7 @@ export class rgbColor {
         return `rgb(${this.r}, ${this.g}, ${this.b})`;
     }
 }
-export class rgbaColor {
+export class RgbaColor {
     constructor(r, g, b, a) {
         this.r = r;
         this.g = g;
@@ -20,8 +20,8 @@ export class rgbaColor {
     }
 }
 const Colors = {
-    Red: new rgbColor(255, 0, 0),
-    Green: new rgbColor(0, 255, 0),
-    Blue: new rgbColor(0, 0, 255)
+    Red: new RgbColor(255, 0, 0),
+    Green: new RgbColor(0, 255, 0),
+    Blue: new RgbColor(0, 0, 255)
 };
 export { Colors };

@@ -2,7 +2,7 @@ export interface Color {
     toString(): null | string
 }
 
-export class rgbColor implements Color {
+export class RgbColor implements Color {
 
     r: number
     g: number
@@ -19,7 +19,7 @@ export class rgbColor implements Color {
     }
 }
 
-export class rgbaColor implements Color {
+export class RgbaColor implements Color {
     
     r: number
     g: number
@@ -39,9 +39,9 @@ export class rgbaColor implements Color {
 }
 
 const Colors = {
-    Red: new rgbColor(255, 0, 0),
-    Green: new rgbColor(0, 255, 0),
-    Blue: new rgbColor(0, 0, 255)
+    Red: new RgbColor(255, 0, 0),
+    Green: new RgbColor(0, 255, 0),
+    Blue: new RgbColor(0, 0, 255)
 }
 
 export { Colors }
