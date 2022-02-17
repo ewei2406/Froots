@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts",
-    "dev": "nodemon -w docs index.ts",
+    "tsupdate": "tsc -w",
+    "dev": "nodemon index.js",
     "save": "git add . && git commit -m 'autoupdate' && git push"
   },
   "author": "",
