@@ -12,4 +12,9 @@ export default class Session {
             uiElement.draw(this.canvas);
         });
     }
+    drawBoundingBoxes() {
+        this.UiObjects.forEach(uiElement => {
+            uiElement.drawBoundingBox(this.canvas);
+        });
+    }
 }

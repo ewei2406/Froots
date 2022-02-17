@@ -1,5 +1,4 @@
 import Canvas from "./Canvas.js"
-import { Colors } from "./Color.js"
 
 export interface gameObject {
     x: number

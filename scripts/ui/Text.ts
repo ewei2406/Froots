@@ -1,29 +1,49 @@
-import Canvas from "../canvas";
-import { Color } from "../Color";
-import { UiObject } from "./UiObject";
+import Canvas from "../canvas.js";
+import { Color, Colors } from "../Color.js";
+import { UiObject } from "./UiObject.js";
 
-export const enum Alignment {
-    LEFT, CENTER, RIGHT
-}
-export class Text extends UiObject {
+export class TextObject extends UiObject {
 
     text: string
     size: number
     font: string
     color: Color
-    alignment: Alignment
     w: number
     h: number
+    fontOffset: number
+    padding: number
 
-    constructor (text: string, x: number, y: number, size: number, font: string, color: Color, alignment: Alignment, canvas: Canvas) {
-        
-        canvas.ctx.font = size + "px " + font
-        super(x, y, canvas.ctx.measureText(text).width, size)
-        
+    constructor (text: string, x: number, y: number, size: number, font: string, color: Color, canvas: Canvas, padding = 0) {
+        super(x, y, 0, 0)
+        this.padding = padding
         this.text = text
         this.size = size
         this.font = font
         this.color = color
-        this.alignment = alignment
+        this.calcSize(canvas)
+    }
+
+    calcSize(canvas: Canvas) {
+        canvas.ctx.font = this.size + "px " + this.font
+        const c = canvas.ctx.measureText(this.text)
+        this.w = c.width + this.padding * 2
+        this.h = c.actualBoundingBoxAscent + c.actualBoundingBoxDescent + this.padding * 2
+        this.fontOffset = c.actualBoundingBoxAscent
+    }
+
+    draw(canvas: Canvas) {
+        canvas.ctx.font = this.size + "px " + this.font
+        canvas.ctx.fillStyle = this.color.toString()
+        canvas.ctx.fillText(
+            this.text, 
+            this.x + this.padding, 
+            this.y + this.fontOffset + this.padding, 
+            this.w)
+    }
+}
+
+export class Heading extends TextObject {
+    constructor(text: string, x: number, y: number, canvas: Canvas) {
+        super(text, x, y, 70, "arial", Colors.BLUE, canvas, 30)
     }
 }
