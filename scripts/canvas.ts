@@ -1,6 +1,6 @@
-import { Color } from "./Color.js"
+import { Color, Colors } from "./Color.js"
 
-export default class Canvas {
+export class Canvas {
 
     public canvas: HTMLCanvasElement
     public ctx: CanvasRenderingContext2D
@@ -30,6 +30,11 @@ export default class Canvas {
         this.canvas.height = this.height
     }
 
+    public screenFill(color: Color) {
+        this.ctx.fillStyle = color.toString()
+        this.ctx.fillRect(0, 0, this.width, this.height)
+    }
+
     public clear() {
         this.ctx.clearRect(0, 0, this.width, this.height)
     }
@@ -45,3 +50,7 @@ export default class Canvas {
         this.ctx.strokeRect(x, y, w, h)
     }
 }
+
+const canvas = new Canvas("gameDisplay", 1080, 1080)
+
+export { canvas }

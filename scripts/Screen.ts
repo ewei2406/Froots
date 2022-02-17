@@ -1,13 +1,13 @@
-import Canvas from "./Canvas.js";
+import { Canvas, canvas } from "./Canvas.js";
+import { Colors } from "./Color.js";
 import { UiObject } from "./ui/UiObject.js";
 
-export default class Screen {
+export class Screen {
 
     UiObjects: Array<UiObject>
-    canvas: Canvas
+    canvas = canvas
 
-    constructor(canvas: Canvas) {
-        this.canvas = canvas
+    constructor() {
         this.UiObjects = []
     }
 
@@ -15,15 +15,21 @@ export default class Screen {
         this.UiObjects.push(newUiObject)
     }
 
+    update() {
+        return null
+    }
+
     draw() {
+        this.canvas.clear()
+        this.canvas.screenFill(Colors.BLACK) // Set the background color
         this.UiObjects.forEach(uiElement => {
-            uiElement.draw(this.canvas)
+            uiElement.draw()
         })
     }
 
     drawBoundingBoxes() {
         this.UiObjects.forEach(uiElement => {
-            uiElement.drawBoundingBox(this.canvas)
+            uiElement.drawBoundingBox()
         })
     }
 }

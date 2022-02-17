@@ -22,6 +22,7 @@ export class RgbaColor {
 const Colors = {
     RED: new RgbColor(255, 0, 0),
     GREEN: new RgbColor(0, 255, 0),
-    BLUE: new RgbColor(0, 0, 255)
+    BLUE: new RgbColor(0, 0, 255),
+    BLACK: new RgbColor(0, 0, 0)
 };
 export { Colors };

@@ -1,4 +1,4 @@
-export default class Canvas {
+export class Canvas {
     constructor(canvasId, width, height) {
         this.id = canvasId;
         this.width = width;
@@ -14,6 +14,10 @@ export default class Canvas {
         this.canvas.width = this.width;
         this.canvas.height = this.height;
     }
+    screenFill(color) {
+        this.ctx.fillStyle = color.toString();
+        this.ctx.fillRect(0, 0, this.width, this.height);
+    }
     clear() {
         this.ctx.clearRect(0, 0, this.width, this.height);
     }
@@ -27,3 +31,5 @@ export default class Canvas {
         this.ctx.strokeRect(x, y, w, h);
     }
 }
+const canvas = new Canvas("gameDisplay", 1080, 1080);
+export { canvas };

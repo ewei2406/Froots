@@ -1,5 +1,5 @@
 import { gameObject } from "../gameObjects.js"
-import Canvas from "../Canvas.js"
+import { canvas } from "../Canvas.js"
 import { Colors } from "../Color.js"
 
 export class UiObject implements gameObject {
@@ -7,6 +7,7 @@ export class UiObject implements gameObject {
     y: number
     w: number
     h: number
+    canvas = canvas
 
     constructor(x: number, y: number, w: number, h: number) {
         this.x = x
@@ -15,11 +16,11 @@ export class UiObject implements gameObject {
         this.h = h
     }
 
-    draw(canvas: Canvas) {
-        canvas.fillRect(this.x, this.y, this.w, this.h, Colors.RED)
+    draw() {
+        this.canvas.fillRect(this.x, this.y, this.w, this.h, Colors.RED)
     }
 
-    drawBoundingBox(canvas: Canvas) {
-        canvas.strokeRect(this.x, this.y, this.w, this.h, Colors.GREEN, 1)
+    drawBoundingBox() {
+        this.canvas.strokeRect(this.x, this.y, this.w, this.h, Colors.GREEN, 1)
     }
 }
