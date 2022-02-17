@@ -38,8 +38,10 @@ export class rgbaColor implements Color {
     }
 }
 
-export class Colors {
-    Red = new rgbColor(255, 0, 0)
-    Green = new rgbColor(0, 255, 0)
-    Blue = new rgbColor(0, 0, 255)
+const Colors = {
+    Red: new rgbColor(255, 0, 0),
+    Green: new rgbColor(0, 255, 0),
+    Blue: new rgbColor(0, 0, 255)
 }
+
+export { Colors }

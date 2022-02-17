@@ -19,10 +19,9 @@ export class rgbaColor {
         return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
     }
 }
-export class Colors {
-    constructor() {
-        this.Red = new rgbColor(255, 0, 0);
-        this.Green = new rgbColor(0, 255, 0);
-        this.Blue = new rgbColor(0, 0, 255);
-    }
-}
+const Colors = {
+    Red: new rgbColor(255, 0, 0),
+    Green: new rgbColor(0, 255, 0),
+    Blue: new rgbColor(0, 0, 255)
+};
+export { Colors };
