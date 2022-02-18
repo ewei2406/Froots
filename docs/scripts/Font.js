@@ -1,4 +1,9 @@
-export default class Fontloader {
+export var Fonts;
+(function (Fonts) {
+    Fonts["TITLE"] = "richland";
+    Fonts["BODY"] = "fff";
+})(Fonts || (Fonts = {}));
+class Fontloader {
     constructor(...fonts) {
         this.loadingFonts = {};
         fonts.forEach(font => {
@@ -19,3 +24,5 @@ export default class Fontloader {
         return true;
     }
 }
+const fontloader = new Fontloader(Fonts.TITLE, Fonts.BODY);
+export { fontloader };

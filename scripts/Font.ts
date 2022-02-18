@@ -1,8 +1,13 @@
-export default class Fontloader {
+export enum Fonts {
+    TITLE = "richland",
+    BODY = "fff"
+}
+
+class Fontloader {
 
     loadingFonts = {}
 
-    constructor(...fonts: Array<string>) {
+    constructor(...fonts: Array<Fonts>) {
 
         fonts.forEach(font => {
             this.loadingFonts[font] = false
@@ -22,3 +27,7 @@ export default class Fontloader {
         return true
     }
 }
+
+const fontloader = new Fontloader(Fonts.TITLE, Fonts.BODY)
+
+export { fontloader }

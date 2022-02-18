@@ -1,34 +1,56 @@
-import Fontloader from "./Font.js";
-import { State, makeScreens } from "./Screens.js"
+import { canvas } from "./Canvas.js";
+import { fontloader } from "./Font.js";
+import { State, makeScreens, Screens } from "./Screens.js"
+import { cursor } from "./ui/Cursor.js";
+import { settings } from "./Settings.js"
+
 
 class App {
 
-    fontloader: Fontloader
-    debug = true
     timer: any
 
-    screens: any
+    screens: Screens
     state = State.TITLE
+    previoustime = Date.now()
 
-    main(screens: any) {
+    main(screens: Screens) {
         this.screens = screens
         const self = this;
+        // self.tick()
         this.timer = setInterval(() => self.tick(), 1000 / 30)
     }
 
     tick() {
-        console.log("Tick!");
+        // console.log("Tick!");
 
-        const newState = this.screens[this.state].update()
-        if (newState) this.state = newState
+        // const now = Date.now()
+        // const fps = 1000 / (now - this.previoustime)
+        // this.previoustime = now
+        // console.log(fps);
+    
+        
+        
+        const currentScreen = this.screens.getScreen(this.state)
 
-        this.screens[this.state].draw()
+        cursor.update()
+        const newState = currentScreen.update()
+        
+        if (newState !== null) this.state = newState
 
-        if (this.debug) this.screens[this.state].drawBoundingBoxes()
+        currentScreen.draw()
+
+        if (settings.DEBUG) {
+            currentScreen.drawBoundingBoxes()
+            const debugScreen = this.screens.getScreen(State.DEBUG)
+            debugScreen.update()
+            debugScreen.draw()
+        }
+
+        if (settings.POSTENABLED) canvas.postProcess()
+        canvas.processImage()
     }
 }
 
-const fontloader = new Fontloader("fff", "richland")
 const wait = setInterval(() => {
     if (fontloader.isReady()) { 
         clearInterval(wait)

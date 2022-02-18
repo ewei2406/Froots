@@ -1,4 +1,4 @@
-import { Color, Colors } from "./Color.js"
+import { Color } from "./Color.js"
 
 export class Canvas {
 
@@ -8,6 +8,8 @@ export class Canvas {
     public id: string
     public width: number
     public height: number
+
+    imageData: ImageData
 
     constructor(canvasId: string, width: number, height: number) {
 
@@ -47,10 +49,91 @@ export class Canvas {
     public strokeRect(x: number, y: number, w: number, h: number, color: Color, lineWidth = 5) {
         this.ctx.strokeStyle = color.toString()
         this.ctx.lineWidth = lineWidth
-        this.ctx.strokeRect(x, y, w, h)
+        this.ctx.strokeRect(Math.round(x) - 0.5, Math.round(y) - 0.5, Math.round(w) + 1, Math.round(h) + 1)
+    }
+
+    public getPixel(x: number, y: number) {
+        const idx = (y * this.imageData.width * 4) + (x * 4)
+        return {
+            r: this.imageData.data[idx],
+            g: this.imageData.data[idx + 1],
+            b: this.imageData.data[idx + 2],
+            a: this.imageData.data[idx + 3]
+        }
+    }
+
+    public setPixel(x: number, y: number, channel: number, value: number) {
+        const idx = (y * this.imageData.width * 4) + (x * 4)
+        this.imageData.data[idx + channel] = value
+    }
+
+    public incrementPixel(x: number, y: number, channel: number, value: number) {
+        const idx = (y * this.imageData.width * 4) + (x * 4)
+        this.imageData.data[idx + channel] += value
+    }
+
+    public getImageData() {
+        this.imageData = this.ctx.getImageData(0, 0, canvas.width, canvas.height);
+    }
+
+    public setImageData() {
+        this.ctx.putImageData(this.imageData, 0, 0);
+    }
+
+    public applyBloom() {
+        for (let x = 0; x < this.canvas.width; x++) {
+            for (let y = 0; y < this.canvas.height; y++) {
+                const pixel = this.getPixel(x, y)
+
+                if (pixel.b > 0) {
+                    const blurRadius = 3
+                    const brightness = pixel.b * (2 / 255)
+                    for (let dx = -blurRadius; dx <= blurRadius; dx++) {
+                        for (let dy = -blurRadius; dy <= blurRadius; dy++) {
+
+                            const d = brightness * (blurRadius * 2 - (dx * dx + dy * dy) + 5)
+
+                            this.incrementPixel(x + dx, y + dy, 0, Math.max(d, 0))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public convertToWhite() {
+        for (let x = 0; x < this.canvas.width; x++) {
+            for (let y = 0; y < this.canvas.height; y++) {
+                const pixel = this.getPixel(x, y)
+                switch (pixel.g) {
+                    case 255:
+                        break;
+                    case 1:
+                        this.setPixel(x, y, 0, 0)
+                        this.setPixel(x, y, 1, 0)
+                        this.setPixel(x, y, 2, 0)
+                        break
+                    default:
+                        this.setPixel(x, y, 1, pixel.r)
+                        this.setPixel(x, y, 2, pixel.r)
+                }
+            }
+        }
+    }
+ 
+    public postProcess() {
+        this.getImageData()
+        this.applyBloom()
+        this.setImageData()
+    }
+
+    public processImage() {
+        this.getImageData()
+        this.convertToWhite()
+        this.setImageData()
     }
 }
 
-const canvas = new Canvas("gameDisplay", 1080, 1080)
+const canvas = new Canvas("gameDisplay", 400, 300)
 
 export { canvas }
