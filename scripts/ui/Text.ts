@@ -42,8 +42,8 @@ export class TextObject extends UiObject {
         this.canvas.ctx.fillStyle = this.color.toString()
         this.canvas.ctx.fillText(
             "" + this.text, 
-            this.x + this.padding, 
-            this.y + this.fontOffset + this.padding)
+            this.x + this.padding + 0.5, 
+            this.y + this.fontOffset + this.padding + 0.5)
     }
 }
 
@@ -55,10 +55,9 @@ export class Heading extends TextObject {
         super(text, x, y, size, Fonts.TITLE, Colors.BRIGHT, 0)
     }
 
-    update(): State {
+    update() {
         this.lifespan++
-        this.color.b = 80 + (Math.sin(this.lifespan * 0.1) * 100)
-        return null
+        this.color.b = 80 + (Math.sin(this.lifespan * 0.2) * 100)
     }
 }
 

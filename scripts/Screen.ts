@@ -1,17 +1,14 @@
 import { canvas } from "./Canvas.js";
 import { Colors } from "./Color.js";
-import { State } from "./Screens.js";
 import { UiObject } from "./ui/UiObject.js";
 
 export class Screen {
 
     UiObjects: Array<UiObject>
-    matchState: State
     canvas = canvas
 
-    constructor(matchState: State) {
+    constructor() {
         this.UiObjects = []
-        this.matchState = matchState
     }
 
     addUiObject(newUiObject: UiObject) {
@@ -22,14 +19,10 @@ export class Screen {
         return this.UiObjects.find(UiObj => UiObj.id === id)
     }
 
-    update(): State {
-        let newState = null
-        this.UiObjects.every(uiElement => {
-            newState = uiElement.update()
-            return (newState === null)
+    update(): void {
+        this.UiObjects.forEach(uiElement => {
+            uiElement.update()
         })
-
-        return newState
     }
 
     draw() {

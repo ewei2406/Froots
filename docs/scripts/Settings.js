@@ -1,4 +1,5 @@
 export const settings = {
-    DEBUG: false,
-    POSTENABLED: true
+    DEBUG: true,
+    POSTENABLED: true,
+    STATE: "TITLE" /* TITLE */
 };

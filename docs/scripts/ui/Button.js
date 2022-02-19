@@ -15,12 +15,11 @@ export class Button extends TextObject {
             cursor.y < this.y + this.h) {
             this.isHover = true;
             if (cursor.click)
-                return this.onClick();
+                this.onClick();
         }
         else {
             this.isHover = false;
         }
-        return null;
     }
     draw() {
         if (this.isHover) {
@@ -32,7 +31,7 @@ export class Button extends TextObject {
         }
         this.canvas.ctx.font = this.getFontString();
         this.canvas.ctx.fillStyle = this.isHover ? Colors.VOID.toString() : this.color.toString();
-        this.canvas.ctx.fillText("" + this.text, this.x + this.padding, this.y + this.fontOffset + this.padding, this.w);
+        this.canvas.ctx.fillText("" + this.text, this.x + this.padding, this.y + this.fontOffset + this.padding + 0.5, this.w);
         this.canvas.strokeRect(this.x, this.y, this.w, this.h, this.color, this.padding * 0.5);
     }
 }

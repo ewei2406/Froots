@@ -31,8 +31,8 @@ export class UiObject implements gameObject {
         this.canvas.fillRect(this.x, this.y, this.w, this.h, Colors.SOLID)
     }
 
-    update(): State {
-        return null
+    update(): void {
+        null
     }
 
     drawBoundingBox() {

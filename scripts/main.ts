@@ -10,7 +10,6 @@ class App {
     timer: any
 
     screens: Screens
-    state = State.TITLE
     previoustime = Date.now()
 
     main(screens: Screens) {
@@ -23,20 +22,13 @@ class App {
     tick() {
         // console.log("Tick!");
 
-        // const now = Date.now()
-        // const fps = 1000 / (now - this.previoustime)
-        // this.previoustime = now
-        // console.log(fps);
-    
+
         
-        
-        const currentScreen = this.screens.getScreen(this.state)
+        const currentScreen = this.screens.getScreen(settings.STATE)
 
         cursor.update()
-        const newState = currentScreen.update()
         
-        if (newState !== null) this.state = newState
-
+        currentScreen.update()
         currentScreen.draw()
 
         if (settings.DEBUG) {

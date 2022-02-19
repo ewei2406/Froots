@@ -19,7 +19,7 @@ export class UiObject {
         this.canvas.fillRect(this.x, this.y, this.w, this.h, Colors.SOLID);
     }
     update() {
-        return null;
+        null;
     }
     drawBoundingBox() {
         this.canvas.strokeRect(this.x, this.y, this.w, this.h, Colors.DEBUG, 1);

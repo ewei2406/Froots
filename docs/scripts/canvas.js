@@ -1,3 +1,4 @@
+import { Colors } from "./Color.js";
 export class Canvas {
     constructor(canvasId, width, height) {
         this.id = canvasId;
@@ -29,6 +30,26 @@ export class Canvas {
         this.ctx.strokeStyle = color.toString();
         this.ctx.lineWidth = lineWidth;
         this.ctx.strokeRect(Math.round(x) - 0.5, Math.round(y) - 0.5, Math.round(w) + 1, Math.round(h) + 1);
+    }
+    line(x1, y1, x2, y2, width, color = Colors.SOLID) {
+        this.ctx.strokeStyle = color.toString();
+        this.ctx.lineWidth = width;
+        this.ctx.beginPath();
+        this.ctx.moveTo(x1, y1);
+        this.ctx.lineTo(x2, y2);
+        this.ctx.stroke();
+    }
+    startLine(x, y, width, color = Colors.SOLID) {
+        this.ctx.strokeStyle = color.toString();
+        this.ctx.lineWidth = width;
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+    }
+    lineTo(x, y) {
+        this.ctx.moveTo(x, y);
+    }
+    finishLine() {
+        this.ctx.stroke();
     }
     getPixel(x, y) {
         const idx = (y * this.imageData.width * 4) + (x * 4);
@@ -74,10 +95,10 @@ export class Canvas {
         for (let x = 0; x < this.canvas.width; x++) {
             for (let y = 0; y < this.canvas.height; y++) {
                 const pixel = this.getPixel(x, y);
-                switch (pixel.g) {
-                    case 255:
+                switch (true) {
+                    case pixel.g > 150:
                         break;
-                    case 1:
+                    case pixel.g == 1:
                         this.setPixel(x, y, 0, 0);
                         this.setPixel(x, y, 1, 0);
                         this.setPixel(x, y, 2, 0);

@@ -1,4 +1,7 @@
+import { State } from "./Screens";
+
 export const settings = {
-    DEBUG: false,
-    POSTENABLED: true
+    DEBUG: true,
+    POSTENABLED: true,
+    STATE: State.TITLE
 }

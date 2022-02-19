@@ -1,4 +1,4 @@
-import { Color } from "./Color.js"
+import { Color, Colors } from "./Color.js"
 
 export class Canvas {
 
@@ -50,6 +50,30 @@ export class Canvas {
         this.ctx.strokeStyle = color.toString()
         this.ctx.lineWidth = lineWidth
         this.ctx.strokeRect(Math.round(x) - 0.5, Math.round(y) - 0.5, Math.round(w) + 1, Math.round(h) + 1)
+    }
+
+    public line(x1: number, y1: number, x2: number, y2: number, width: number, color=Colors.SOLID) {
+        this.ctx.strokeStyle = color.toString()
+        this.ctx.lineWidth = width
+        this.ctx.beginPath()
+        this.ctx.moveTo(x1, y1)
+        this.ctx.lineTo(x2, y2)
+        this.ctx.stroke()
+    }
+
+    public startLine(x: number, y: number, width: number, color = Colors.SOLID) {
+        this.ctx.strokeStyle = color.toString()
+        this.ctx.lineWidth = width
+        this.ctx.beginPath()
+        this.ctx.moveTo(x, y)
+    }
+
+    public lineTo(x: number, y: number) {
+        this.ctx.moveTo(x, y)
+    }
+
+    public finishLine() {
+        this.ctx.stroke()
     }
 
     public getPixel(x: number, y: number) {
@@ -105,10 +129,10 @@ export class Canvas {
         for (let x = 0; x < this.canvas.width; x++) {
             for (let y = 0; y < this.canvas.height; y++) {
                 const pixel = this.getPixel(x, y)
-                switch (pixel.g) {
-                    case 255:
+                switch (true) {
+                    case pixel.g > 150:
                         break;
-                    case 1:
+                    case pixel.g == 1:
                         this.setPixel(x, y, 0, 0)
                         this.setPixel(x, y, 1, 0)
                         this.setPixel(x, y, 2, 0)

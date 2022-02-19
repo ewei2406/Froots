@@ -1,10 +1,9 @@
 import { canvas } from "./Canvas.js";
 import { Colors } from "./Color.js";
 export class Screen {
-    constructor(matchState) {
+    constructor() {
         this.canvas = canvas;
         this.UiObjects = [];
-        this.matchState = matchState;
     }
     addUiObject(newUiObject) {
         this.UiObjects.push(newUiObject);
@@ -13,12 +12,9 @@ export class Screen {
         return this.UiObjects.find(UiObj => UiObj.id === id);
     }
     update() {
-        let newState = null;
-        this.UiObjects.every(uiElement => {
-            newState = uiElement.update();
-            return (newState === null);
+        this.UiObjects.forEach(uiElement => {
+            uiElement.update();
         });
-        return newState;
     }
     draw() {
         this.canvas.clear();

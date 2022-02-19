@@ -5,7 +5,6 @@ import { cursor } from "./ui/Cursor.js";
 import { settings } from "./Settings.js";
 class App {
     constructor() {
-        this.state = 2 /* TITLE */;
         this.previoustime = Date.now();
     }
     main(screens) {
@@ -16,19 +15,13 @@ class App {
     }
     tick() {
         // console.log("Tick!");
-        // const now = Date.now()
-        // const fps = 1000 / (now - this.previoustime)
-        // this.previoustime = now
-        // console.log(fps);
-        const currentScreen = this.screens.getScreen(this.state);
+        const currentScreen = this.screens.getScreen(settings.STATE);
         cursor.update();
-        const newState = currentScreen.update();
-        if (newState !== null)
-            this.state = newState;
+        currentScreen.update();
         currentScreen.draw();
         if (settings.DEBUG) {
             currentScreen.drawBoundingBoxes();
-            const debugScreen = this.screens.getScreen(1 /* DEBUG */);
+            const debugScreen = this.screens.getScreen("DEBUG" /* DEBUG */);
             debugScreen.update();
             debugScreen.draw();
         }

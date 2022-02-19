@@ -9,8 +9,8 @@ export class Screens {
     constructor() {
         this.screens = {};
     }
-    addScreen(screen) {
-        this.screens[screen.matchState] = screen;
+    addScreen(screen, state) {
+        this.screens[state] = screen;
     }
     getScreen(state) {
         return this.screens[state];
@@ -18,13 +18,36 @@ export class Screens {
 }
 class DebugScreen extends Screen {
     constructor() {
-        super(1 /* DEBUG */);
-        const cursorText = new TextObject(0, 250, 250, 20, Fonts.BODY, Colors.SOLID);
-        cursorText.update = (function () {
+        super();
+        this.now = Date.now();
+        this.previousTime = 0;
+        const cursorX = new TextObject("X: ERROR", 340, 5, 9, Fonts.BODY, Colors.DEBUG);
+        cursorX.update = (function () {
             this.text = "X: " + Math.round(cursor.x);
             return null;
-        }).bind(cursorText);
-        this.addUiObject(cursorText);
+        }).bind(cursorX);
+        this.addUiObject(cursorX);
+        const cursorY = new TextObject("Y: ERROR", 340, 15, 9, Fonts.BODY, Colors.DEBUG);
+        cursorY.update = (function () {
+            this.text = "Y: " + Math.round(cursor.y);
+            return null;
+        }).bind(cursorY);
+        this.addUiObject(cursorY);
+        const currentState = new TextObject("S: ERROR", 340, 25, 9, Fonts.BODY, Colors.DEBUG);
+        currentState.update = (function () {
+            this.text = "S: " + settings.STATE;
+            return null;
+        }).bind(currentState);
+        this.addUiObject(currentState);
+        const fpsCounter = new TextObject("F: ERROR", 340, 35, 9, Fonts.BODY, Colors.DEBUG);
+        fpsCounter.update = (function () {
+            this.now = Date.now();
+            const fps = 1000 / (this.now - this.previousTime);
+            this.previousTime = this.now;
+            this.text = "F: " + Math.round(fps);
+            return null;
+        }).bind(fpsCounter);
+        this.addUiObject(fpsCounter);
     }
     draw() {
         this.UiObjects.forEach(uiElement => {
@@ -34,55 +57,64 @@ class DebugScreen extends Screen {
 }
 class TitleScreen extends Screen {
     constructor() {
-        super(2 /* TITLE */);
+        super();
         this.addUiObject(new Heading("Froots", 20, 20, 40));
         this.addUiObject(new TextObject("TD", 145, 20, 20, Fonts.BODY, Colors.SOLID));
         this.addUiObject(new TextObject("V 0.0.1", 340, 270, 10, Fonts.BODY, Colors.SOLID));
-        this.addUiObject(new Button("PLAY", 20, 160, 10, () => {
-            console.log("PLAY!");
-            return null;
+        this.addUiObject(new Button("NEW GAME", 20, 185, 10, () => {
+            settings.STATE = "LVLS" /* LEVELSELECT */;
         }));
-        this.addUiObject(new Button("HELP", 20, 210, 10, () => {
-            console.log("HELP!");
-            return null;
-        }));
-        this.addUiObject(new Button("ABOUT", 20, 235, 10, () => {
+        this.addUiObject(new Button("ABOUT", 20, 210, 10, () => {
             console.log("ABOUT!");
-            return null;
         }));
-        this.addUiObject(new Button("SETTINGS", 20, 185, 10, () => {
+        this.addUiObject(new Button("SETTINGS", 20, 235, 10, () => {
             console.log("SETTINGS!");
-            return 3 /* SETTINGS */;
-        }));
-        this.addUiObject(new Button("EXIT", 20, 260, 10, () => {
-            console.log("EXIT!");
-            return null;
+            settings.STATE = "SETTINGS" /* SETTINGS */;
         }));
     }
 }
 class SettingsScreen extends Screen {
     constructor() {
-        super(3 /* SETTINGS */);
+        super();
         this.addUiObject(new Heading("Settings", 20, 20, 40));
-        const togglePost = new Button("DISABLE POST", 20, 160, 10, null);
+        const togglePost = new Button(settings.POSTENABLED ? "DISABLE POST" : "ENABLE POST", 20, 210, 10, null);
         togglePost.onClick = (function () {
-            this.text = settings.POSTENABLED ? "ENABLE POST" : "DISABLE POST";
-            this.calcSize();
             settings.POSTENABLED = !settings.POSTENABLED;
+            this.text = settings.POSTENABLED ? "DISABLE POST" : "ENABLE POST";
+            this.calcSize();
             return null;
         }).bind(togglePost);
         this.addUiObject(togglePost);
+        const toggleDebug = new Button(settings.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG", 20, 235, 10, null);
+        toggleDebug.onClick = (function () {
+            settings.DEBUG = !settings.DEBUG;
+            this.text = settings.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG";
+            this.calcSize();
+            return null;
+        }).bind(toggleDebug);
+        this.addUiObject(toggleDebug);
         this.addUiObject(new Button("BACK", 20, 260, 10, () => {
             console.log("BACK!");
-            return 2 /* TITLE */;
+            settings.STATE = "TITLE" /* TITLE */;
+        }));
+    }
+}
+class LevelSelectScreen extends Screen {
+    constructor() {
+        super();
+        this.addUiObject(new Heading("New Game", 20, 20, 40));
+        this.addUiObject(new Button("BACK", 20, 260, 10, () => {
+            console.log("BACK!");
+            settings.STATE = "TITLE" /* TITLE */;
         }));
     }
 }
 function makeScreens() {
     const screens = new Screens();
-    screens.addScreen(new TitleScreen());
-    screens.addScreen(new DebugScreen());
-    screens.addScreen(new SettingsScreen());
+    screens.addScreen(new TitleScreen(), "TITLE" /* TITLE */);
+    screens.addScreen(new DebugScreen(), "DEBUG" /* DEBUG */);
+    screens.addScreen(new SettingsScreen(), "SETTINGS" /* SETTINGS */);
+    screens.addScreen(new LevelSelectScreen(), "LVLS" /* LEVELSELECT */);
     return (screens);
 }
 export { makeScreens };
