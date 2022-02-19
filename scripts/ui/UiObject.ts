@@ -16,7 +16,7 @@ export class UiObject implements gameObject {
     w: number
     h: number
     id: number
-    canvas = canvas
+    color = colors.SOLID
 
     constructor(x: number, y: number, w: number, h: number) {
         this.x = x
@@ -27,7 +27,7 @@ export class UiObject implements gameObject {
     }
 
     draw() {
-        this.canvas.fillRect(this.x, this.y, this.w, this.h, colors.SOLID)
+        canvas.fillRect(this.x, this.y, this.w, this.h, this.color)
     }
 
     update(): void {
@@ -35,6 +35,6 @@ export class UiObject implements gameObject {
     }
 
     drawBoundingBox() {
-        this.canvas.strokeRect(this.x, this.y, this.w, this.h, colors.DEBUG, 1)
+        canvas.strokeRect(this.x, this.y, this.w, this.h, colors.DEBUG, 1)
     }
 }

@@ -1,6 +1,7 @@
 import { colors } from "../Color.js";
 import { Fonts } from "../Font.js";
 import { UiObject } from "./UiObject.js";
+import { canvas } from "../Canvas.js";
 export class TextObject extends UiObject {
     constructor(text, x, y, size, font, color, padding = 0) {
         super(x, y, 0, 0);
@@ -15,16 +16,16 @@ export class TextObject extends UiObject {
         return this.size + "px " + this.font;
     }
     calcSize() {
-        this.canvas.ctx.font = this.getFontString();
-        const c = this.canvas.ctx.measureText("" + this.text);
+        canvas.ctx.font = this.getFontString();
+        const c = canvas.ctx.measureText("" + this.text);
         this.w = c.actualBoundingBoxRight + this.padding * 2 - c.actualBoundingBoxLeft;
         this.h = c.actualBoundingBoxAscent + c.actualBoundingBoxDescent + this.padding * 2;
         this.fontOffset = c.actualBoundingBoxAscent;
     }
-    draw() {
-        this.canvas.ctx.font = this.getFontString();
-        this.canvas.ctx.fillStyle = this.color.toString();
-        this.canvas.ctx.fillText("" + this.text, this.x + this.padding + 0.5, this.y + this.fontOffset + this.padding + 0.5);
+    draw(color = this.color) {
+        canvas.ctx.font = this.getFontString();
+        canvas.ctx.fillStyle = color.toString();
+        canvas.ctx.fillText("" + this.text, this.x + this.padding + 0.5, this.y + this.fontOffset + this.padding + 0.5);
     }
 }
 export class Heading extends TextObject {

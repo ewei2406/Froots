@@ -1,20 +1,5 @@
-export default class Screen {
-    constructor(canvas) {
-        console.log("Screen created");
-        this.canvas = canvas;
-        this.UiObjects = [];
-    }
-    addUiObject(newUiObject) {
-        this.UiObjects.push(newUiObject);
-    }
-    draw() {
-        this.UiObjects.forEach(uiElement => {
-            uiElement.draw(this.canvas);
-        });
-    }
-    drawBoundingBoxes() {
-        this.UiObjects.forEach(uiElement => {
-            uiElement.drawBoundingBox(this.canvas);
-        });
-    }
-}
+export const session = {
+    DEBUG: true,
+    POSTENABLED: true,
+    CURRENTSCREEN: "TITLE" /* TITLE */
+};

@@ -4,25 +4,19 @@ import { Screen } from "./Screen.js";
 import { Button } from "./ui/Button.js";
 import { cursor } from "./ui/Cursor.js";
 import { Heading, TextObject } from "./ui/Text.js";
-import { settings } from "./Settings.js";
-import { TrackNames, tracks } from "./game/tracks.js";
+import { session } from "./Session.js";
+import { TrackSelector } from "./ui/TrackButton.js";
 
-export const enum State {
-    DEBUG="DEBUG",
-    TITLE="TITLE",
-    SETTINGS="SETTINGS",
-    LEVELSELECT="LVLS"
-}
 
 export class Screens {
     screens = {}
 
-    addScreen(screen: Screen, state: State) {
-        this.screens[state] = screen
+    addScreen(screen: Screen, screenName: screenNames) {
+        this.screens[screenName] = screen
     }
 
-    getScreen(state: State): Screen {
-        return this.screens[state]
+    getScreen(screenName: screenNames): Screen {
+        return this.screens[screenName]
     }
 }
 
@@ -53,14 +47,14 @@ class DebugScreen extends Screen {
 
         this.addUiObject(cursorY)
 
-        const currentState = new TextObject("S: ERROR", 340, 25, 9, Fonts.BODY, colors.DEBUG)
+        const currentScreen = new TextObject("SC: ERROR", 340, 25, 9, Fonts.BODY, colors.DEBUG)
 
-        currentState.update = (function () {
-            this.text = "S: " + settings.STATE
+        currentScreen.update = (function () {
+            this.text = "SC: " + session.CURRENTSCREEN
             return null
-        }).bind(currentState)
+        }).bind(currentScreen)
 
-        this.addUiObject(currentState)
+        this.addUiObject(currentScreen)
 
 
         const fpsCounter = new TextObject("F: ERROR", 340, 35, 9, Fonts.BODY, colors.DEBUG)
@@ -98,16 +92,16 @@ class TitleScreen extends Screen {
         this.addUiObject(new TextObject("V 0.0.1", 340, 270, 10, Fonts.BODY, colors.SOLID))
 
         this.addUiObject(new Button("NEW GAME", 20, 185, 10, () => {
-            settings.STATE = State.LEVELSELECT
+            session.CURRENTSCREEN = screenNames.LEVELSELECT
         }))
 
         this.addUiObject(new Button("ABOUT", 20, 210, 10, () => {
             console.log("ABOUT!");
-        }))
+        }, true))
 
         this.addUiObject(new Button("SETTINGS", 20, 235, 10, () => {
             console.log("SETTINGS!");
-            settings.STATE = State.SETTINGS
+            session.CURRENTSCREEN = screenNames.SETTINGS
         }))
     }
 }
@@ -118,12 +112,12 @@ class SettingsScreen extends Screen {
 
         this.addUiObject(new Heading("Settings", 20, 20, 40))
 
-        const togglePost = new Button(settings.POSTENABLED ? "DISABLE POST" : "ENABLE POST", 
+        const togglePost = new Button(session.POSTENABLED ? "DISABLE POST" : "ENABLE POST", 
             20, 210, 10, null)
 
         togglePost.onClick = (function() {
-            settings.POSTENABLED = !settings.POSTENABLED
-            this.text = settings.POSTENABLED ? "DISABLE POST" : "ENABLE POST"
+            session.POSTENABLED = !session.POSTENABLED
+            this.text = session.POSTENABLED ? "DISABLE POST" : "ENABLE POST"
             this.calcSize()
             return null
         }).bind(togglePost)
@@ -131,12 +125,12 @@ class SettingsScreen extends Screen {
         this.addUiObject(togglePost)
 
 
-        const toggleDebug = new Button(settings.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG", 
+        const toggleDebug = new Button(session.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG", 
             20, 235, 10, null)
 
         toggleDebug.onClick = (function () {
-            settings.DEBUG = !settings.DEBUG
-            this.text = settings.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG"
+            session.DEBUG = !session.DEBUG
+            this.text = session.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG"
             this.calcSize()
             return null
         }).bind(toggleDebug)
@@ -145,7 +139,7 @@ class SettingsScreen extends Screen {
 
         this.addUiObject(new Button("BACK", 20, 260, 10, () => {
             console.log("BACK!");
-            settings.STATE = State.TITLE
+            session.CURRENTSCREEN = screenNames.TITLE
         }))
     }
 }
@@ -154,25 +148,33 @@ class LevelSelectScreen extends Screen {
     constructor() {
         super()
 
-        this.addUiObject(new Heading("New Game", 20, 20, 40))
+        this.addUiObject(new Heading("Select Level", 20, 20, 40))
 
         this.addUiObject(new Button("BACK", 20, 260, 10, () => {
-            console.log("BACK!");
-            settings.STATE = State.TITLE
+            session.CURRENTSCREEN = screenNames.TITLE
         }))
 
-        this.addUiObject(tracks.getTrackUiObject(TrackNames.TRACK1, 20, 100, 100, 100))
+        this.addUiObject(new TrackSelector(20, 100))
     }
+}
+
+export const enum screenNames {
+    DEBUG = "DEBUG",
+    TITLE = "TITLE",
+    SETTINGS = "SETTINGS",
+    LEVELSELECT = "LVLS",
+    DIFMODESELECT = "LVLS2"
 }
 
 function makeScreens(): any {
 
     const screens = new Screens()
 
-    screens.addScreen(new TitleScreen(), State.TITLE)
-    screens.addScreen(new DebugScreen(), State.DEBUG)
-    screens.addScreen(new SettingsScreen(), State.SETTINGS)
-    screens.addScreen(new LevelSelectScreen(), State.LEVELSELECT)
+    screens.addScreen(new TitleScreen(), screenNames.TITLE)
+    screens.addScreen(new DebugScreen(), screenNames.DEBUG)
+    screens.addScreen(new SettingsScreen(), screenNames.SETTINGS)
+    screens.addScreen(new LevelSelectScreen(), screenNames.LEVELSELECT)
+    screens.addScreen(new Screen(), screenNames.DIFMODESELECT)
 
     return (
         screens

@@ -23,6 +23,7 @@ class Colors {
     constructor() {
         this.lifespan = 0;
         this.SOLID = new RgbColor(255, 0, 0);
+        this.MEDIUM = new RgbColor(50, 0, 0);
         this.EMPTY = new RgbColor(0, 0, 0);
         this.VOID = new RgbColor(0, 1, 0);
         this.DEBUG = new RgbColor(0, 255, 0);

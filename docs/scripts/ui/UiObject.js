@@ -8,7 +8,7 @@ function generateId() {
 }
 export class UiObject {
     constructor(x, y, w, h) {
-        this.canvas = canvas;
+        this.color = colors.SOLID;
         this.x = x;
         this.y = y;
         this.w = w;
@@ -16,12 +16,12 @@ export class UiObject {
         this.id = generateId();
     }
     draw() {
-        this.canvas.fillRect(this.x, this.y, this.w, this.h, colors.SOLID);
+        canvas.fillRect(this.x, this.y, this.w, this.h, this.color);
     }
     update() {
         null;
     }
     drawBoundingBox() {
-        this.canvas.strokeRect(this.x, this.y, this.w, this.h, colors.DEBUG, 1);
+        canvas.strokeRect(this.x, this.y, this.w, this.h, colors.DEBUG, 1);
     }
 }

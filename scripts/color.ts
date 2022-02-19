@@ -43,6 +43,7 @@ class Colors {
     lifespan = 0
 
     SOLID = new RgbColor(255, 0, 0)
+    MEDIUM = new RgbColor(50, 0, 0)
     EMPTY = new RgbColor(0, 0, 0)
     VOID = new RgbColor(0, 1, 0)
     DEBUG = new RgbColor(0, 255, 0)

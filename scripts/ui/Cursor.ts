@@ -9,8 +9,13 @@ class Cursor {
 
     update(): void {
         this.click = false
+        canvas.canvas.style.cursor = "default"
         if (this.mouseDown && !this.prevState) this.click = true
         this.prevState = this.mouseDown
+    }
+
+    setPointer(): void {
+        canvas.canvas.style.cursor = "pointer"
     }
 
     setMouseDown(): void {

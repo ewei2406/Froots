@@ -4,17 +4,17 @@ import { Screen } from "./Screen.js";
 import { Button } from "./ui/Button.js";
 import { cursor } from "./ui/Cursor.js";
 import { Heading, TextObject } from "./ui/Text.js";
-import { settings } from "./Settings.js";
-import { tracks } from "./game/tracks.js";
+import { session } from "./Session.js";
+import { TrackSelector } from "./ui/TrackButton.js";
 export class Screens {
     constructor() {
         this.screens = {};
     }
-    addScreen(screen, state) {
-        this.screens[state] = screen;
+    addScreen(screen, screenName) {
+        this.screens[screenName] = screen;
     }
-    getScreen(state) {
-        return this.screens[state];
+    getScreen(screenName) {
+        return this.screens[screenName];
     }
 }
 class DebugScreen extends Screen {
@@ -34,12 +34,12 @@ class DebugScreen extends Screen {
             return null;
         }).bind(cursorY);
         this.addUiObject(cursorY);
-        const currentState = new TextObject("S: ERROR", 340, 25, 9, Fonts.BODY, colors.DEBUG);
-        currentState.update = (function () {
-            this.text = "S: " + settings.STATE;
+        const currentScreen = new TextObject("SC: ERROR", 340, 25, 9, Fonts.BODY, colors.DEBUG);
+        currentScreen.update = (function () {
+            this.text = "SC: " + session.CURRENTSCREEN;
             return null;
-        }).bind(currentState);
-        this.addUiObject(currentState);
+        }).bind(currentScreen);
+        this.addUiObject(currentScreen);
         const fpsCounter = new TextObject("F: ERROR", 340, 35, 9, Fonts.BODY, colors.DEBUG);
         fpsCounter.update = (function () {
             this.now = Date.now();
@@ -63,14 +63,14 @@ class TitleScreen extends Screen {
         this.addUiObject(new TextObject("TD", 145, 20, 20, Fonts.BODY, colors.SOLID));
         this.addUiObject(new TextObject("V 0.0.1", 340, 270, 10, Fonts.BODY, colors.SOLID));
         this.addUiObject(new Button("NEW GAME", 20, 185, 10, () => {
-            settings.STATE = "LVLS" /* LEVELSELECT */;
+            session.CURRENTSCREEN = "LVLS" /* LEVELSELECT */;
         }));
         this.addUiObject(new Button("ABOUT", 20, 210, 10, () => {
             console.log("ABOUT!");
-        }));
+        }, true));
         this.addUiObject(new Button("SETTINGS", 20, 235, 10, () => {
             console.log("SETTINGS!");
-            settings.STATE = "SETTINGS" /* SETTINGS */;
+            session.CURRENTSCREEN = "SETTINGS" /* SETTINGS */;
         }));
     }
 }
@@ -78,37 +78,36 @@ class SettingsScreen extends Screen {
     constructor() {
         super();
         this.addUiObject(new Heading("Settings", 20, 20, 40));
-        const togglePost = new Button(settings.POSTENABLED ? "DISABLE POST" : "ENABLE POST", 20, 210, 10, null);
+        const togglePost = new Button(session.POSTENABLED ? "DISABLE POST" : "ENABLE POST", 20, 210, 10, null);
         togglePost.onClick = (function () {
-            settings.POSTENABLED = !settings.POSTENABLED;
-            this.text = settings.POSTENABLED ? "DISABLE POST" : "ENABLE POST";
+            session.POSTENABLED = !session.POSTENABLED;
+            this.text = session.POSTENABLED ? "DISABLE POST" : "ENABLE POST";
             this.calcSize();
             return null;
         }).bind(togglePost);
         this.addUiObject(togglePost);
-        const toggleDebug = new Button(settings.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG", 20, 235, 10, null);
+        const toggleDebug = new Button(session.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG", 20, 235, 10, null);
         toggleDebug.onClick = (function () {
-            settings.DEBUG = !settings.DEBUG;
-            this.text = settings.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG";
+            session.DEBUG = !session.DEBUG;
+            this.text = session.DEBUG ? "DISABLE DEBUG" : "ENABLE DEBUG";
             this.calcSize();
             return null;
         }).bind(toggleDebug);
         this.addUiObject(toggleDebug);
         this.addUiObject(new Button("BACK", 20, 260, 10, () => {
             console.log("BACK!");
-            settings.STATE = "TITLE" /* TITLE */;
+            session.CURRENTSCREEN = "TITLE" /* TITLE */;
         }));
     }
 }
 class LevelSelectScreen extends Screen {
     constructor() {
         super();
-        this.addUiObject(new Heading("New Game", 20, 20, 40));
+        this.addUiObject(new Heading("Select Level", 20, 20, 40));
         this.addUiObject(new Button("BACK", 20, 260, 10, () => {
-            console.log("BACK!");
-            settings.STATE = "TITLE" /* TITLE */;
+            session.CURRENTSCREEN = "TITLE" /* TITLE */;
         }));
-        this.addUiObject(tracks.getTrackUiObject("ZigZag" /* TRACK1 */, 20, 100, 100, 100));
+        this.addUiObject(new TrackSelector(20, 100));
     }
 }
 function makeScreens() {
@@ -117,6 +116,7 @@ function makeScreens() {
     screens.addScreen(new DebugScreen(), "DEBUG" /* DEBUG */);
     screens.addScreen(new SettingsScreen(), "SETTINGS" /* SETTINGS */);
     screens.addScreen(new LevelSelectScreen(), "LVLS" /* LEVELSELECT */);
+    screens.addScreen(new Screen(), "LVLS2" /* DIFMODESELECT */);
     return (screens);
 }
 export { makeScreens };

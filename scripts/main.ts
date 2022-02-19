@@ -1,8 +1,8 @@
 import { canvas } from "./Canvas.js";
 import { fontloader } from "./Font.js";
-import { State, makeScreens, Screens } from "./Screens.js"
+import { screenNames, makeScreens, Screens } from "./Screens.js"
 import { cursor } from "./ui/Cursor.js";
-import { settings } from "./Settings.js"
+import { session } from "./Session.js"
 import { colors } from "./Color.js";
 
 
@@ -25,7 +25,7 @@ class App {
 
 
         
-        const currentScreen = this.screens.getScreen(settings.STATE)
+        const currentScreen = this.screens.getScreen(session.CURRENTSCREEN)
 
         // UPDATE
         cursor.update()
@@ -36,14 +36,14 @@ class App {
         // DRAW
         currentScreen.draw()
 
-        if (settings.DEBUG) {
+        if (session.DEBUG) {
             currentScreen.drawBoundingBoxes()
-            const debugScreen = this.screens.getScreen(State.DEBUG)
+            const debugScreen = this.screens.getScreen(screenNames.DEBUG)
             debugScreen.update()
             debugScreen.draw()
         }
 
-        if (settings.POSTENABLED) canvas.postProcess()
+        if (session.POSTENABLED) canvas.postProcess()
         canvas.processImage()
     }
 }
