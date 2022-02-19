@@ -3,6 +3,7 @@ import { fontloader } from "./Font.js";
 import { makeScreens } from "./Screens.js";
 import { cursor } from "./ui/Cursor.js";
 import { settings } from "./Settings.js";
+import { colors } from "./Color.js";
 class App {
     constructor() {
         this.previoustime = Date.now();
@@ -16,8 +17,11 @@ class App {
     tick() {
         // console.log("Tick!");
         const currentScreen = this.screens.getScreen(settings.STATE);
+        // UPDATE
         cursor.update();
         currentScreen.update();
+        colors.update();
+        // DRAW
         currentScreen.draw();
         if (settings.DEBUG) {
             currentScreen.drawBoundingBoxes();

@@ -1,10 +1,11 @@
-import { Colors } from "./Color.js";
+import { colors } from "./Color.js";
 import { Fonts } from "./Font.js";
 import { Screen } from "./Screen.js";
 import { Button } from "./ui/Button.js";
 import { cursor } from "./ui/Cursor.js";
 import { Heading, TextObject } from "./ui/Text.js";
 import { settings } from "./Settings.js";
+import { tracks } from "./game/tracks.js";
 export class Screens {
     constructor() {
         this.screens = {};
@@ -21,25 +22,25 @@ class DebugScreen extends Screen {
         super();
         this.now = Date.now();
         this.previousTime = 0;
-        const cursorX = new TextObject("X: ERROR", 340, 5, 9, Fonts.BODY, Colors.DEBUG);
+        const cursorX = new TextObject("X: ERROR", 340, 5, 9, Fonts.BODY, colors.DEBUG);
         cursorX.update = (function () {
             this.text = "X: " + Math.round(cursor.x);
             return null;
         }).bind(cursorX);
         this.addUiObject(cursorX);
-        const cursorY = new TextObject("Y: ERROR", 340, 15, 9, Fonts.BODY, Colors.DEBUG);
+        const cursorY = new TextObject("Y: ERROR", 340, 15, 9, Fonts.BODY, colors.DEBUG);
         cursorY.update = (function () {
             this.text = "Y: " + Math.round(cursor.y);
             return null;
         }).bind(cursorY);
         this.addUiObject(cursorY);
-        const currentState = new TextObject("S: ERROR", 340, 25, 9, Fonts.BODY, Colors.DEBUG);
+        const currentState = new TextObject("S: ERROR", 340, 25, 9, Fonts.BODY, colors.DEBUG);
         currentState.update = (function () {
             this.text = "S: " + settings.STATE;
             return null;
         }).bind(currentState);
         this.addUiObject(currentState);
-        const fpsCounter = new TextObject("F: ERROR", 340, 35, 9, Fonts.BODY, Colors.DEBUG);
+        const fpsCounter = new TextObject("F: ERROR", 340, 35, 9, Fonts.BODY, colors.DEBUG);
         fpsCounter.update = (function () {
             this.now = Date.now();
             const fps = 1000 / (this.now - this.previousTime);
@@ -59,8 +60,8 @@ class TitleScreen extends Screen {
     constructor() {
         super();
         this.addUiObject(new Heading("Froots", 20, 20, 40));
-        this.addUiObject(new TextObject("TD", 145, 20, 20, Fonts.BODY, Colors.SOLID));
-        this.addUiObject(new TextObject("V 0.0.1", 340, 270, 10, Fonts.BODY, Colors.SOLID));
+        this.addUiObject(new TextObject("TD", 145, 20, 20, Fonts.BODY, colors.SOLID));
+        this.addUiObject(new TextObject("V 0.0.1", 340, 270, 10, Fonts.BODY, colors.SOLID));
         this.addUiObject(new Button("NEW GAME", 20, 185, 10, () => {
             settings.STATE = "LVLS" /* LEVELSELECT */;
         }));
@@ -107,6 +108,7 @@ class LevelSelectScreen extends Screen {
             console.log("BACK!");
             settings.STATE = "TITLE" /* TITLE */;
         }));
+        this.addUiObject(tracks.getTrackUiObject("ZigZag" /* TRACK1 */, 20, 100, 100, 100));
     }
 }
 function makeScreens() {

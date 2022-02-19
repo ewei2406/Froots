@@ -1,4 +1,4 @@
-import { Colors } from "../Color.js";
+import { colors } from "../Color.js";
 import { Fonts } from "../Font.js";
 import { UiObject } from "./UiObject.js";
 export class TextObject extends UiObject {
@@ -29,16 +29,11 @@ export class TextObject extends UiObject {
 }
 export class Heading extends TextObject {
     constructor(text, x, y, size) {
-        super(text, x, y, size, Fonts.TITLE, Colors.BRIGHT, 0);
-        this.lifespan = 0;
-    }
-    update() {
-        this.lifespan++;
-        this.color.b = 80 + (Math.sin(this.lifespan * 0.2) * 100);
+        super(text, x, y, size, Fonts.TITLE, colors.FLASHING, 0);
     }
 }
 export class Body extends TextObject {
     constructor(text, x, y) {
-        super(text, x, y, 20, Fonts.BODY, Colors.SOLID, 5);
+        super(text, x, y, 20, Fonts.BODY, colors.SOLID, 5);
     }
 }

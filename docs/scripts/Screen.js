@@ -1,5 +1,5 @@
 import { canvas } from "./Canvas.js";
-import { Colors } from "./Color.js";
+import { colors } from "./Color.js";
 export class Screen {
     constructor() {
         this.canvas = canvas;
@@ -18,7 +18,7 @@ export class Screen {
     }
     draw() {
         this.canvas.clear();
-        this.canvas.screenFill(Colors.EMPTY); // Set the background color
+        this.canvas.screenFill(colors.EMPTY); // Set the background color
         this.UiObjects.forEach(uiElement => {
             uiElement.draw();
         });

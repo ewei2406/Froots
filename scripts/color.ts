@@ -38,13 +38,24 @@ export class RgbaColor implements Color {
     }
 }
 
-const Colors = {
-    SOLID: new RgbColor(255, 0, 0),
-    EMPTY: new RgbColor(0, 0, 0),
-    VOID: new RgbColor(0, 1, 0),
-    DEBUG: new RgbColor(0, 255, 0),
-    BRIGHT: new RgbColor(255, 0, 150),
-    ULTRABRIGHT: new RgbColor(255, 0, 255),
+class Colors {
+
+    lifespan = 0
+
+    SOLID = new RgbColor(255, 0, 0)
+    EMPTY = new RgbColor(0, 0, 0)
+    VOID = new RgbColor(0, 1, 0)
+    DEBUG = new RgbColor(0, 255, 0)
+    BRIGHT = new RgbColor(255, 0, 150)
+    FLASHING = new RgbColor(255, 0, 150)
+    ULTRABRIGHT = new RgbColor(255, 0, 255)
+
+    update() {
+        this.lifespan++
+        this.FLASHING.b = 80 + (Math.sin(this.lifespan * 0.2) * 100)
+    }
 }
 
-export { Colors }
+const colors = new Colors()
+
+export { colors }

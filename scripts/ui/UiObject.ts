@@ -1,7 +1,6 @@
 import { gameObject } from "../gameObjects.js"
 import { canvas } from "../Canvas.js"
-import { Colors } from "../Color.js"
-import { State } from "../Screens.js"
+import { colors } from "../Color.js"
 
 let maxId = 0
 
@@ -28,7 +27,7 @@ export class UiObject implements gameObject {
     }
 
     draw() {
-        this.canvas.fillRect(this.x, this.y, this.w, this.h, Colors.SOLID)
+        this.canvas.fillRect(this.x, this.y, this.w, this.h, colors.SOLID)
     }
 
     update(): void {
@@ -36,6 +35,6 @@ export class UiObject implements gameObject {
     }
 
     drawBoundingBox() {
-        this.canvas.strokeRect(this.x, this.y, this.w, this.h, Colors.DEBUG, 1)
+        this.canvas.strokeRect(this.x, this.y, this.w, this.h, colors.DEBUG, 1)
     }
 }

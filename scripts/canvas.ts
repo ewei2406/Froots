@@ -1,4 +1,4 @@
-import { Color, Colors } from "./Color.js"
+import { Color, colors } from "./Color.js"
 
 export class Canvas {
 
@@ -52,24 +52,28 @@ export class Canvas {
         this.ctx.strokeRect(Math.round(x) - 0.5, Math.round(y) - 0.5, Math.round(w) + 1, Math.round(h) + 1)
     }
 
-    public line(x1: number, y1: number, x2: number, y2: number, width: number, color=Colors.SOLID) {
+    public line(x1: number, y1: number, x2: number, y2: number, width: number, color=colors.SOLID, lineJoin="round") {
         this.ctx.strokeStyle = color.toString()
         this.ctx.lineWidth = width
+        // @ts-ignore
+        this.ctx.lineJoin = lineJoin
         this.ctx.beginPath()
         this.ctx.moveTo(x1, y1)
         this.ctx.lineTo(x2, y2)
         this.ctx.stroke()
     }
 
-    public startLine(x: number, y: number, width: number, color = Colors.SOLID) {
+    public startLine(x: number, y: number, width: number, color = colors.SOLID, lineJoin = "round") {
         this.ctx.strokeStyle = color.toString()
         this.ctx.lineWidth = width
+        // @ts-ignore
+        this.ctx.lineJoin = lineJoin
         this.ctx.beginPath()
         this.ctx.moveTo(x, y)
     }
 
     public lineTo(x: number, y: number) {
-        this.ctx.moveTo(x, y)
+        this.ctx.lineTo(x, y)
     }
 
     public finishLine() {

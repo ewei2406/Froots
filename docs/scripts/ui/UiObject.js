@@ -1,5 +1,5 @@
 import { canvas } from "../Canvas.js";
-import { Colors } from "../Color.js";
+import { colors } from "../Color.js";
 let maxId = 0;
 function generateId() {
     const id = maxId;
@@ -16,12 +16,12 @@ export class UiObject {
         this.id = generateId();
     }
     draw() {
-        this.canvas.fillRect(this.x, this.y, this.w, this.h, Colors.SOLID);
+        this.canvas.fillRect(this.x, this.y, this.w, this.h, colors.SOLID);
     }
     update() {
         null;
     }
     drawBoundingBox() {
-        this.canvas.strokeRect(this.x, this.y, this.w, this.h, Colors.DEBUG, 1);
+        this.canvas.strokeRect(this.x, this.y, this.w, this.h, colors.DEBUG, 1);
     }
 }

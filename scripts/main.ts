@@ -3,6 +3,7 @@ import { fontloader } from "./Font.js";
 import { State, makeScreens, Screens } from "./Screens.js"
 import { cursor } from "./ui/Cursor.js";
 import { settings } from "./Settings.js"
+import { colors } from "./Color.js";
 
 
 class App {
@@ -26,9 +27,13 @@ class App {
         
         const currentScreen = this.screens.getScreen(settings.STATE)
 
+        // UPDATE
         cursor.update()
-        
         currentScreen.update()
+        colors.update()
+
+
+        // DRAW
         currentScreen.draw()
 
         if (settings.DEBUG) {

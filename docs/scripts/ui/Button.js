@@ -1,10 +1,10 @@
-import { Colors } from "../Color.js";
+import { colors } from "../Color.js";
 import { Fonts } from "../Font.js";
 import { cursor } from "./Cursor.js";
 import { TextObject } from "./Text.js";
 export class Button extends TextObject {
     constructor(text, x, y, size, onClick) {
-        super(text, x, y, size, Fonts.BODY, Colors.SOLID, size * 0.5);
+        super(text, x, y, size, Fonts.BODY, colors.SOLID, size * 0.5);
         this.isHover = false;
         this.onClick = onClick;
     }
@@ -23,14 +23,14 @@ export class Button extends TextObject {
     }
     draw() {
         if (this.isHover) {
-            this.color = Colors.ULTRABRIGHT;
+            this.color = colors.ULTRABRIGHT;
             this.canvas.fillRect(this.x, this.y, this.w, this.h, this.color.toString());
         }
         else {
-            this.color = Colors.SOLID;
+            this.color = colors.SOLID;
         }
         this.canvas.ctx.font = this.getFontString();
-        this.canvas.ctx.fillStyle = this.isHover ? Colors.VOID.toString() : this.color.toString();
+        this.canvas.ctx.fillStyle = this.isHover ? colors.VOID.toString() : this.color.toString();
         this.canvas.ctx.fillText("" + this.text, this.x + this.padding, this.y + this.fontOffset + this.padding + 0.5, this.w);
         this.canvas.strokeRect(this.x, this.y, this.w, this.h, this.color, this.padding * 0.5);
     }
