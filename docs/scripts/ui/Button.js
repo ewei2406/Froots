@@ -3,6 +3,7 @@ import { Fonts } from "../Font.js";
 import { cursor } from "./Cursor.js";
 import { TextObject } from "./Text.js";
 import { canvas } from "../Canvas.js";
+import { audioPlayer, audios } from "../Audio.js";
 export class Button extends TextObject {
     constructor(text, x, y, size, onClick, disabled = false) {
         super(text, x, y, size, Fonts.BODY, colors.SOLID, size * 0.5);
@@ -21,8 +22,10 @@ export class Button extends TextObject {
                 cursor.y < this.y + this.h) {
                 this.isHover = true;
                 cursor.setPointer();
-                if (cursor.click)
+                if (cursor.click) {
+                    audioPlayer.playAudio(audios.SELECT);
                     this.onClick();
+                }
             }
             else {
                 this.isHover = false;

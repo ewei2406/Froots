@@ -6,6 +6,8 @@ import { cursor } from "./ui/Cursor.js";
 import { Heading, TextObject } from "./ui/Text.js";
 import { session } from "./Session.js";
 import { TrackSelector } from "./ui/TrackButton.js";
+import { TrackNames, tracks, TrackUiObject } from "./game/tracks.js";
+import { gameConstructor } from "./game/gameConstructor.js";
 
 
 export class Screens {
@@ -158,6 +160,21 @@ class LevelSelectScreen extends Screen {
     }
 }
 
+class DifModeSelect extends Screen {
+    constructor() {
+        super()
+
+        const currentTrack = new TrackUiObject(gameConstructor.trackName, 20, 20, 120, 100)
+        currentTrack.trackName = gameConstructor.trackName
+        
+        this.addUiObject(currentTrack)
+
+        this.addUiObject(new Button("BACK", 20, 260, 10, () => {
+            session.CURRENTSCREEN = screenNames.LEVELSELECT
+        }))
+    }
+}
+
 export const enum screenNames {
     DEBUG = "DEBUG",
     TITLE = "TITLE",
@@ -174,7 +191,7 @@ function makeScreens(): any {
     screens.addScreen(new DebugScreen(), screenNames.DEBUG)
     screens.addScreen(new SettingsScreen(), screenNames.SETTINGS)
     screens.addScreen(new LevelSelectScreen(), screenNames.LEVELSELECT)
-    screens.addScreen(new Screen(), screenNames.DIFMODESELECT)
+    screens.addScreen(new DifModeSelect(), screenNames.DIFMODESELECT)
 
     return (
         screens

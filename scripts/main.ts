@@ -4,6 +4,8 @@ import { screenNames, makeScreens, Screens } from "./Screens.js"
 import { cursor } from "./ui/Cursor.js";
 import { session } from "./Session.js"
 import { colors } from "./Color.js";
+import { audioPlayer } from "./Audio.js";
+import { gameConstructor } from "./game/gameConstructor.js";
 
 
 class App {
@@ -22,8 +24,6 @@ class App {
 
     tick() {
         // console.log("Tick!");
-
-
         
         const currentScreen = this.screens.getScreen(session.CURRENTSCREEN)
 
@@ -49,7 +49,7 @@ class App {
 }
 
 const wait = setInterval(() => {
-    if (fontloader.isReady()) { 
+    if (fontloader.isReady() && audioPlayer.isReady()) { 
         clearInterval(wait)
         console.log("Loaded!");
         const app = new App()

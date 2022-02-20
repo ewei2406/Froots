@@ -59,42 +59,6 @@ export class Track {
     }
 }
 
-export class TrackUiObject extends UiObject {
-
-    track: Track
-
-    constructor(track: Track, x: number, y: number, w: number, h: number) {
-        super(x, y, w, h)
-        this.track = track
-
-        for(let i = 0; i < this.track.nodes.length; i++) {
-            this.track.nodes[i] = this.scaleNode(this.track.nodes[i])
-        }
-    }
-
-    scaleNode(node: TrackNode): TrackNode {
-        return new TrackNode(node.x, node.y, 
-            (canvas.width ** 2) / this.w, 
-            (canvas.height ** 2) / this.h)
-    }
-
-    setX(x : number) {
-        this.x = x
-    }
-
-    draw(color=colors.BRIGHT): void {
-        const startNode = this.track.nodes[0]
-        canvas.startLine(startNode.x + this.x, startNode.y + this.y, 5, color)
-
-        for (let i = 1; i < this.track.nodes.length; i++) {
-            const node = this.track.nodes[i]
-            canvas.lineTo(node.x + this.x, node.y + this.y)
-        }
-
-        canvas.finishLine()
-    }
-}
-
 export class Tracks {
     tracks = {}
     trackNames = []
@@ -109,8 +73,7 @@ export class Tracks {
     }
 
     getTrackUiObject(trackName: TrackNames, x: number, y: number, w: number, h: number): TrackUiObject {
-        const t = this.tracks[trackName]
-        return new TrackUiObject(t, x, y, w, h)
+        return new TrackUiObject(trackName, x, y, w, h)
     }
 }
 
@@ -126,3 +89,37 @@ tracks.addTrack(new Track([[5, 5], [15, 20], [25, 10], [35, 25]], 40, 30), Track
 tracks.addTrack(new Track([[5, 5], [35, 25]], 40, 30), TrackNames.TRACK3)
 
 export { tracks }
+
+export class TrackUiObject extends UiObject {
+
+    trackName: TrackNames
+
+    constructor(trackName: TrackNames, x: number, y: number, w: number, h: number) {
+        super(x, y, w, h)
+        this.trackName = trackName
+    }
+
+    scaleNode(node: TrackNode): TrackNode {
+        return new TrackNode(node.x, node.y,
+            (canvas.width ** 2) / this.w,
+            (canvas.height ** 2) / this.h)
+    }
+
+    setX(x: number) {
+        this.x = x
+    }
+
+    draw(color = colors.BRIGHT): void {
+        const t = tracks.getTrack(this.trackName)
+        
+        const startNode = this.scaleNode(t.nodes[0])
+        canvas.startLine(startNode.x + this.x, startNode.y + this.y, 5, color)
+
+        for (let i = 1; i < t.nodes.length; i++) {
+            const node = this.scaleNode(t.nodes[i])
+            canvas.lineTo(node.x + this.x, node.y + this.y)
+        }
+
+        canvas.finishLine()
+    }
+}

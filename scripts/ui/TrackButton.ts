@@ -1,6 +1,7 @@
 import { canvas } from "../Canvas.js";
 import { colors } from "../Color.js";
 import { Fonts } from "../Font.js";
+import { gameConstructor } from "../game/gameConstructor.js";
 import { tracks, TrackNames, TrackUiObject } from "../game/tracks.js";
 import { screenNames } from "../Screens.js";
 import { session } from "../Session.js";
@@ -21,6 +22,7 @@ export class TrackButton extends UiObject {
         this.trackName = trackName
         
         this.selectButton = new Button("", this.x, this.y, 10, () => {
+            gameConstructor.trackName = this.trackName
             session.CURRENTSCREEN = screenNames.DIFMODESELECT
         })
 

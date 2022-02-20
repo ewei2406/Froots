@@ -4,6 +4,7 @@ import { makeScreens } from "./Screens.js";
 import { cursor } from "./ui/Cursor.js";
 import { session } from "./Session.js";
 import { colors } from "./Color.js";
+import { audioPlayer } from "./Audio.js";
 class App {
     constructor() {
         this.previoustime = Date.now();
@@ -35,7 +36,7 @@ class App {
     }
 }
 const wait = setInterval(() => {
-    if (fontloader.isReady()) {
+    if (fontloader.isReady() && audioPlayer.isReady()) {
         clearInterval(wait);
         console.log("Loaded!");
         const app = new App();

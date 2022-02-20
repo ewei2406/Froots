@@ -6,6 +6,8 @@ import { cursor } from "./ui/Cursor.js";
 import { Heading, TextObject } from "./ui/Text.js";
 import { session } from "./Session.js";
 import { TrackSelector } from "./ui/TrackButton.js";
+import { TrackUiObject } from "./game/tracks.js";
+import { gameConstructor } from "./game/gameConstructor.js";
 export class Screens {
     constructor() {
         this.screens = {};
@@ -110,13 +112,24 @@ class LevelSelectScreen extends Screen {
         this.addUiObject(new TrackSelector(20, 100));
     }
 }
+class DifModeSelect extends Screen {
+    constructor() {
+        super();
+        const currentTrack = new TrackUiObject(gameConstructor.trackName, 20, 20, 120, 100);
+        currentTrack.trackName = gameConstructor.trackName;
+        this.addUiObject(currentTrack);
+        this.addUiObject(new Button("BACK", 20, 260, 10, () => {
+            session.CURRENTSCREEN = "LVLS" /* LEVELSELECT */;
+        }));
+    }
+}
 function makeScreens() {
     const screens = new Screens();
     screens.addScreen(new TitleScreen(), "TITLE" /* TITLE */);
     screens.addScreen(new DebugScreen(), "DEBUG" /* DEBUG */);
     screens.addScreen(new SettingsScreen(), "SETTINGS" /* SETTINGS */);
     screens.addScreen(new LevelSelectScreen(), "LVLS" /* LEVELSELECT */);
-    screens.addScreen(new Screen(), "LVLS2" /* DIFMODESELECT */);
+    screens.addScreen(new DifModeSelect(), "LVLS2" /* DIFMODESELECT */);
     return (screens);
 }
 export { makeScreens };
