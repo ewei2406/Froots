@@ -46,6 +46,6 @@ export class Button extends TextObject {
         canvas.ctx.font = this.getFontString();
         canvas.ctx.fillStyle = this.isHover ? colors.VOID.toString() : this.color.toString();
         canvas.ctx.fillText("" + this.text, this.x + this.padding, this.y + this.fontOffset + this.padding + 0.5, this.w);
-        canvas.strokeRect(this.x, this.y, this.w, this.h, this.isHover ? this.borderHoverColor.toString() : this.color.toString(), this.padding * 0.5);
+        canvas.strokeRect(this.x, this.y, this.w, this.h, this.isHover ? this.borderHoverColor.toString() : this.color.toString(), 2.5);
     }
 }

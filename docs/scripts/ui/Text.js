@@ -25,7 +25,7 @@ export class TextObject extends UiObject {
     draw(color = this.color) {
         canvas.ctx.font = this.getFontString();
         canvas.ctx.fillStyle = color.toString();
-        canvas.ctx.fillText("" + this.text, this.x + this.padding + 0.5, this.y + this.fontOffset + this.padding + 0.5);
+        canvas.ctx.fillText("" + this.text, this.x + this.padding, this.y + this.fontOffset + this.padding);
     }
 }
 export class Heading extends TextObject {

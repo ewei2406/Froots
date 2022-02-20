@@ -8,6 +8,7 @@ import { session, Settings } from "./Session.js";
 import { TrackSelector } from "./ui/TrackButton.js";
 import { TrackUiObject } from "./game/tracks.js";
 import { gameConstructor } from "./game/gameConstructor.js";
+import { difficulties, gameModes } from "./game/gameModes.js";
 class DebugScreen extends Screen {
     constructor() {
         super();
@@ -108,28 +109,55 @@ class DifModeSelect extends Screen {
     constructor() {
         super();
         this.addUiObject(new Heading("Game Settings", 20, 20, 40));
-        this.addUiObject(new TextObject("MAP:", 20, 110, 15, Fonts.BODY, colors.SOLID));
-        const title = new Heading(gameConstructor.trackName, 65, 100, 20);
+        // TITLE
+        const title = new Heading(gameConstructor.trackName, 20, 100, 20);
         title.onLoad = (function () {
             this.text = gameConstructor.trackName;
         }).bind(title);
         this.addUiObject(title);
+        // TRACK
         const currentTrack = new TrackUiObject(gameConstructor.trackName, 180, 100, 200, 150, true);
         currentTrack.onLoad = (function () {
             this.trackName = gameConstructor.trackName;
         }).bind(currentTrack);
         this.addUiObject(currentTrack);
+        // DIFFICULTY
         this.addUiObject(new TextObject("DIFFICULTY", 20, 140, 10, Fonts.BODY, colors.SOLID));
-        this.addUiObject(new Button("- EASY", 20, 155, 10, () => {
-            console.log("E");
-        }));
+        this.addUiObject(new TextObject("▲", 20, 155, 9, Fonts.BODY, colors.SOLID));
+        this.addUiObject(new TextObject("▼", 20, 165, 9, Fonts.BODY, colors.SOLID));
+        const difButton = new Button(difficulties[gameConstructor.difficulty], 35, 155, 10, () => null);
+        difButton.onClick = (function () {
+            gameConstructor.cycleDifficulty();
+            this.text = difficulties[gameConstructor.difficulty];
+            this.calcSize();
+        }).bind(difButton);
+        this.addUiObject(difButton);
+        // GAME MODE
         this.addUiObject(new TextObject("GAME MODE", 20, 185, 10, Fonts.BODY, colors.SOLID));
-        this.addUiObject(new Button("- EASY", 20, 200, 10, () => {
-            console.log("E");
-        }));
+        this.addUiObject(new TextObject("▲", 20, 200, 9, Fonts.BODY, colors.SOLID));
+        this.addUiObject(new TextObject("▼", 20, 210, 9, Fonts.BODY, colors.SOLID));
+        const gameButton = new Button(gameModes[gameConstructor.gameMode], 35, 200, 10, () => null);
+        gameButton.onClick = (function () {
+            gameConstructor.cycleGameMode();
+            this.text = gameModes[gameConstructor.gameMode];
+            this.calcSize();
+        }).bind(gameButton);
+        this.addUiObject(gameButton);
+        // Start
+        const startButton = new Button("START!", 380, 260, 10, () => {
+            session.setCurrentScreen("INGAME" /* INGAME */);
+        });
+        startButton.x -= startButton.w;
+        this.addUiObject(startButton);
+        // Back
         this.addUiObject(new Button("BACK", 20, 260, 10, () => {
             session.setCurrentScreen("LVLS" /* LEVELSELECT */);
         }));
+    }
+}
+class InGame extends Screen {
+    constructor() {
+        super();
     }
 }
 export class Screens {
@@ -150,6 +178,7 @@ function makeScreens() {
     screens.addScreen(new SettingsScreen(), "SETTINGS" /* SETTINGS */);
     screens.addScreen(new LevelSelectScreen(), "LVLS" /* LEVELSELECT */);
     screens.addScreen(new DifModeSelect(), "LVLS2" /* DIFMODESELECT */);
+    screens.addScreen(new InGame(), "INGAME" /* INGAME */);
     return (screens);
 }
 export { makeScreens };

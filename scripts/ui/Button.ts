@@ -62,6 +62,6 @@ export class Button extends TextObject {
 
         canvas.strokeRect(this.x, this.y, this.w, this.h, 
             this.isHover ? this.borderHoverColor.toString() : this.color.toString(), 
-            this.padding * 0.5)
+            2.5)
     }
 }

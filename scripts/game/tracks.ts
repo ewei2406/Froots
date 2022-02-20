@@ -119,6 +119,7 @@ export class TrackUiObject extends UiObject {
 
         if (this.showEndpoint) {
             canvas.fillRect(startNode.x + this.x - 5, startNode.y + this.y - 5, 10, 10, color)
+            canvas.strokeRect(this.x, this.y, this.w, this.h, colors.SOLID, 2.5)
         }
 
         canvas.startLine(startNode.x + this.x, startNode.y + this.y, 5, color)

@@ -42,8 +42,8 @@ export class TextObject extends UiObject {
         canvas.ctx.fillStyle = color.toString()
         canvas.ctx.fillText(
             "" + this.text, 
-            this.x + this.padding + 0.5, 
-            this.y + this.fontOffset + this.padding + 0.5)
+            this.x + this.padding, 
+            this.y + this.fontOffset + this.padding)
     }
 }
 
