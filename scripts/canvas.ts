@@ -63,7 +63,7 @@ export class Canvas {
         this.ctx.stroke()
     }
 
-    public startLine(x: number, y: number, width: number, color = colors.SOLID, lineJoin = "round") {
+    public startLine(x: number, y: number, width: number, color: Color, lineJoin = "round") {
         this.ctx.strokeStyle = color.toString()
         this.ctx.lineWidth = width
         // @ts-ignore
@@ -79,6 +79,77 @@ export class Canvas {
     public finishLine() {
         this.ctx.stroke()
     }
+
+    public arrowDeg(x: number, y: number, theta: number, magnitude: number, headsize: number, lineWidth: number, color: Color): void {
+        this.ctx.lineWidth = lineWidth
+        this.ctx.lineJoin = "miter"
+        this.ctx.strokeStyle = color.toString()
+        this.ctx.beginPath()
+        const dTheta = Math.atan(headsize / (2 * (magnitude - headsize)))
+
+        this.ctx.moveTo(x, y)
+
+        this.lineTo(
+            (magnitude - headsize) * Math.cos(theta) + x,
+            (magnitude - headsize) * Math.sin(theta) + y)
+
+        this.lineTo(
+            (magnitude - headsize) * Math.cos(theta + dTheta) + x,
+            (magnitude - headsize) * Math.sin(theta + dTheta) + y)
+
+        this.lineTo(
+            (magnitude) * Math.cos(theta) + x,
+            (magnitude) * Math.sin(theta) + y)
+
+        this.lineTo(
+            (magnitude - headsize) * Math.cos(theta - dTheta) + x,
+            (magnitude - headsize) * Math.sin(theta - dTheta) + y)
+
+        this.lineTo(
+            (magnitude - headsize) * Math.cos(theta) + x,
+            (magnitude - headsize) * Math.sin(theta) + y)
+
+        this.ctx.stroke()
+    }
+
+    public arrowDegTo(x: number, y: number, theta: number, magnitude: number, headsize: number): void {
+        const dTheta = Math.atan(headsize / (2 * (magnitude - headsize)))
+        this.ctx.lineJoin = "miter"
+
+        this.lineTo(
+            (magnitude - headsize) * Math.cos(theta) + x,
+            (magnitude - headsize) * Math.sin(theta) + y)
+
+        this.lineTo(
+            (magnitude - headsize) * Math.cos(theta + dTheta) + x,
+            (magnitude - headsize) * Math.sin(theta + dTheta) + y)
+
+        this.lineTo(
+            (magnitude) * Math.cos(theta) + x,
+            (magnitude) * Math.sin(theta) + y)
+
+        this.lineTo(
+            (magnitude - headsize) * Math.cos(theta - dTheta) + x,
+            (magnitude - headsize) * Math.sin(theta - dTheta) + y)
+
+        this.lineTo(
+            (magnitude - headsize) * Math.cos(theta) + x,
+            (magnitude - headsize) * Math.sin(theta) + y)
+    }
+
+    public lineArrow(x1: number, y1: number, x2: number, y2: number, headsize: number, lineWidth: number, color: Color): void {
+        const theta = Math.atan((y2 - y1) / (x2 - x1))
+        const magnitude = Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)
+        this.arrowDeg(x1, y1, theta, magnitude, headsize, lineWidth, color)
+    }
+
+    public lineArrowTo(x1: number, y1: number, x2: number, y2: number, headsize: number) {
+        const theta = Math.atan((y2 - y1) / (x2 - x1))
+        const magnitude = Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)
+        this.arrowDegTo(x1, y1, theta, magnitude, headsize)
+    }
+
+    // PIXEL MANIPULATION
 
     public getPixel(x: number, y: number) {
         const idx = (y * this.imageData.width * 4) + (x * 4)

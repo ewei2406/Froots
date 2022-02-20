@@ -2,7 +2,7 @@ import { canvas } from "./Canvas.js";
 import { fontloader } from "./Font.js";
 import { makeScreens } from "./Screens.js";
 import { cursor } from "./ui/Cursor.js";
-import { session } from "./Session.js";
+import { session, Settings } from "./Session.js";
 import { colors } from "./Color.js";
 import { audioPlayer } from "./Audio.js";
 class App {
@@ -17,20 +17,20 @@ class App {
     }
     tick() {
         // console.log("Tick!");
-        const currentScreen = this.screens.getScreen(session.CURRENTSCREEN);
+        const currentScreen = this.screens.getScreen(session.getCurrentScreenName());
         // UPDATE
         cursor.update();
         currentScreen.update();
         colors.update();
         // DRAW
         currentScreen.draw();
-        if (session.DEBUG) {
+        if (session.getSetting(Settings.DEBUG)) {
             currentScreen.drawBoundingBoxes();
             const debugScreen = this.screens.getScreen("DEBUG" /* DEBUG */);
             debugScreen.update();
             debugScreen.draw();
         }
-        if (session.POSTENABLED)
+        if (session.getSetting(Settings.POSTPROCESSING))
             canvas.postProcess();
         canvas.processImage();
     }
@@ -39,7 +39,9 @@ const wait = setInterval(() => {
     if (fontloader.isReady() && audioPlayer.isReady()) {
         clearInterval(wait);
         console.log("Loaded!");
+        const screens = makeScreens();
         const app = new App();
-        app.main(makeScreens());
+        session.setScreens(screens);
+        app.main(screens);
     }
 }, 1000 / 10);

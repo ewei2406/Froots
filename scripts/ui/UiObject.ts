@@ -37,4 +37,8 @@ export class UiObject implements gameObject {
     drawBoundingBox() {
         canvas.strokeRect(this.x, this.y, this.w, this.h, colors.DEBUG, 1)
     }
+
+    onLoad(): void {
+        return null
+    }
 }

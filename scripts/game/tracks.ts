@@ -93,10 +93,12 @@ export { tracks }
 export class TrackUiObject extends UiObject {
 
     trackName: TrackNames
+    showEndpoint: boolean
 
-    constructor(trackName: TrackNames, x: number, y: number, w: number, h: number) {
+    constructor(trackName: TrackNames, x: number, y: number, w: number, h: number, showEndpoint=false) {
         super(x, y, w, h)
         this.trackName = trackName
+        this.showEndpoint = showEndpoint
     }
 
     scaleNode(node: TrackNode): TrackNode {
@@ -110,16 +112,36 @@ export class TrackUiObject extends UiObject {
     }
 
     draw(color = colors.BRIGHT): void {
+        
         const t = tracks.getTrack(this.trackName)
         
         const startNode = this.scaleNode(t.nodes[0])
+
+        if (this.showEndpoint) {
+            canvas.fillRect(startNode.x + this.x - 5, startNode.y + this.y - 5, 10, 10, color)
+        }
+
         canvas.startLine(startNode.x + this.x, startNode.y + this.y, 5, color)
 
-        for (let i = 1; i < t.nodes.length; i++) {
+        for (let i = 1; i < t.nodes.length - 1; i++) {
             const node = this.scaleNode(t.nodes[i])
             canvas.lineTo(node.x + this.x, node.y + this.y)
         }
 
+        const lastNode = this.scaleNode(t.nodes[t.nodes.length - 1])
+        if (this.showEndpoint) {
+            const prevNode = this.scaleNode(t.nodes[t.nodes.length - 2])
+            canvas.lineArrowTo(
+                prevNode.x + this.x, prevNode.y + this.y,
+                lastNode.x + this.x, lastNode.y + this.y, 
+                5
+                )
+        } else {
+            canvas.lineTo(lastNode.x + this.x, lastNode.y + this.y)
+        }
+
         canvas.finishLine()
+
+        
     }
 }

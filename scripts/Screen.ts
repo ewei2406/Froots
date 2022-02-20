@@ -38,4 +38,10 @@ export class Screen {
             uiElement.drawBoundingBox()
         })
     }
+
+    onLoad(): void {
+        this.UiObjects.forEach(uiElement => {
+            uiElement.onLoad()
+        })
+    }
 }

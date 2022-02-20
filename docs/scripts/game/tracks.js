@@ -62,9 +62,10 @@ tracks.addTrack(new Track([[5, 5], [15, 20], [25, 10], [35, 25]], 40, 30), "Zig 
 tracks.addTrack(new Track([[5, 5], [35, 25]], 40, 30), "Pain" /* TRACK3 */);
 export { tracks };
 export class TrackUiObject extends UiObject {
-    constructor(trackName, x, y, w, h) {
+    constructor(trackName, x, y, w, h, showEndpoint = false) {
         super(x, y, w, h);
         this.trackName = trackName;
+        this.showEndpoint = showEndpoint;
     }
     scaleNode(node) {
         return new TrackNode(node.x, node.y, (Math.pow(canvas.width, 2)) / this.w, (Math.pow(canvas.height, 2)) / this.h);
@@ -75,10 +76,21 @@ export class TrackUiObject extends UiObject {
     draw(color = colors.BRIGHT) {
         const t = tracks.getTrack(this.trackName);
         const startNode = this.scaleNode(t.nodes[0]);
+        if (this.showEndpoint) {
+            canvas.fillRect(startNode.x + this.x - 5, startNode.y + this.y - 5, 10, 10, color);
+        }
         canvas.startLine(startNode.x + this.x, startNode.y + this.y, 5, color);
-        for (let i = 1; i < t.nodes.length; i++) {
+        for (let i = 1; i < t.nodes.length - 1; i++) {
             const node = this.scaleNode(t.nodes[i]);
             canvas.lineTo(node.x + this.x, node.y + this.y);
+        }
+        const lastNode = this.scaleNode(t.nodes[t.nodes.length - 1]);
+        if (this.showEndpoint) {
+            const prevNode = this.scaleNode(t.nodes[t.nodes.length - 2]);
+            canvas.lineArrowTo(prevNode.x + this.x, prevNode.y + this.y, lastNode.x + this.x, lastNode.y + this.y, 5);
+        }
+        else {
+            canvas.lineTo(lastNode.x + this.x, lastNode.y + this.y);
         }
         canvas.finishLine();
     }

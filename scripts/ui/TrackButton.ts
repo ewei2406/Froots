@@ -23,7 +23,7 @@ export class TrackButton extends UiObject {
         
         this.selectButton = new Button("", this.x, this.y, 10, () => {
             gameConstructor.trackName = this.trackName
-            session.CURRENTSCREEN = screenNames.DIFMODESELECT
+            session.setCurrentScreen(screenNames.DIFMODESELECT)
         })
 
         this.selectButton.w = this.w

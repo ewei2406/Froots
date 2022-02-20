@@ -24,4 +24,7 @@ export class UiObject {
     drawBoundingBox() {
         canvas.strokeRect(this.x, this.y, this.w, this.h, colors.DEBUG, 1);
     }
+    onLoad() {
+        return null;
+    }
 }

@@ -1,7 +1,43 @@
-import { screenNames } from "./Screens";
+import { screenNames, Screens } from "./Screens";
 
-export const session = {
-    DEBUG: true,
-    POSTENABLED: true,
-    CURRENTSCREEN: screenNames.TITLE
+export enum Settings {
+    DEBUG="DEBUG",
+    POSTPROCESSING="POSTPROCESSING"
 }
+
+const settings = {
+    DEBUG: true,
+    POSTPROCESSING: true
+}
+
+class Session {
+    settings = settings
+    currentScreen = screenNames.DIFMODESELECT
+    screens: Screens
+
+    setScreens(screens: Screens) {
+        this.screens = screens
+    }
+
+    getCurrentScreenName() {
+        return this.currentScreen
+    }
+
+    setSetting(setting: Settings, value: any) {
+        this.settings[setting] = value
+    }
+
+    getSetting(setting: Settings) {
+        return this.settings[setting]
+    }
+
+    setCurrentScreen(newScreen: screenNames, disableOnload=false) {
+        this.currentScreen = newScreen
+        if (!disableOnload) {
+            this.screens.getScreen(this.currentScreen).onLoad()
+        }
+    }
+}
+
+const session = new Session()
+export { session }
