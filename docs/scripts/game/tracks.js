@@ -1,8 +1,15 @@
 import { canvas } from "../Canvas.js";
 import { colors } from "../Color.js";
 import { UiObject } from "../ui/UiObject.js";
-class TrackNode {
+export class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+class TrackNode extends Point {
     constructor(x, y, width, height) {
+        super(x, y);
         this.distToNext = 1;
         this.x = canvas.width * x / width;
         this.y = canvas.height * y / height;
@@ -15,6 +22,8 @@ class TrackNode {
 }
 export class Track {
     constructor(nodes, n_width, n_height) {
+        this.startColor = colors.SOLID;
+        this.endColor = colors.SOLID;
         this.nodes = [];
         nodes.forEach(node => {
             this.nodes.push(new TrackNode(node[0], node[1], n_width, n_height));
@@ -23,6 +32,14 @@ export class Track {
             this.nodes[i].setDistanceToNext(this.nodes[i + 1]);
             this.length += this.nodes[i].distToNext;
         }
+        this.nodes[this.nodes.length - 1].distToNext = 0;
+        this.updateLength();
+    }
+    updateLength() {
+        this.length = 0;
+        this.nodes.forEach(n => {
+            this.length += n.distToNext;
+        });
     }
     draw() {
         const startNode = this.nodes[0];
@@ -38,6 +55,46 @@ export class Track {
             canvas.lineTo(node.x, node.y);
         }
         canvas.finishLine();
+    }
+    drawStart() {
+        const startNode = this.nodes[0];
+        canvas.fillRect(startNode.x - 10, startNode.y - 10, 20, 20, colors.SOLID);
+        canvas.strokeRect(startNode.x - 10, startNode.y - 10, 20, 20, this.startColor);
+    }
+    drawEnd() {
+        const endNode = this.nodes[this.nodes.length - 1];
+        canvas.fillRect(endNode.x - 10, endNode.y - 10, 20, 20, colors.EMPTY);
+        canvas.strokeRect(endNode.x - 10, endNode.y - 10, 20, 20, this.endColor);
+    }
+    getPosition(distance) {
+        const res = new Point(this.nodes[0].x, this.nodes[0].y);
+        if (distance <= 0) {
+            null;
+        }
+        else if (distance >= this.length) {
+            const lastNode = this.nodes.slice(-1)[0];
+            res.x = lastNode.x;
+            res.y = lastNode.y;
+        }
+        else {
+            let a = 0;
+            let i = 0;
+            while (a <= distance) {
+                if (i >= this.nodes.length) {
+                    const lastNode = this.nodes.slice(-1)[0];
+                    res.x = lastNode.x;
+                    res.y = lastNode.y;
+                    return res;
+                }
+                a += this.nodes[i].distToNext;
+                i++;
+            }
+            const prevNode = this.nodes[i - 1];
+            const p = 1 - ((a - distance) / (prevNode.distToNext));
+            res.x = prevNode.x + p * (this.nodes[i].x - prevNode.x);
+            res.y = prevNode.y + p * (this.nodes[i].y - prevNode.y);
+        }
+        return res;
     }
 }
 export class Tracks {
@@ -57,7 +114,7 @@ export class Tracks {
     }
 }
 const tracks = new Tracks();
-tracks.addTrack(new Track([[5, 5], [35, 5], [35, 15], [5, 15], [5, 25], [35, 25]], 40, 30), "Logs" /* TRACK1 */);
+tracks.addTrack(new Track([[5, 5], [35, 5], [35, 15], [5, 15], [5, 25], [35, 25]], 40, 30), "2" /* TRACK1 */);
 tracks.addTrack(new Track([[5, 5], [15, 20], [25, 10], [35, 25]], 40, 30), "Zig Zag" /* TRACK2 */);
 tracks.addTrack(new Track([[5, 5], [35, 25]], 40, 30), "Pain" /* TRACK3 */);
 export { tracks };

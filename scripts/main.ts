@@ -19,6 +19,7 @@ class App {
         const self = this;
         // self.tick()
         this.timer = setInterval(() => self.tick(), 1000 / 30)
+
     }
 
     tick() {

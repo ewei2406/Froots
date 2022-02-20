@@ -9,5 +9,5 @@ export var gameModes;
 (function (gameModes) {
     gameModes[gameModes["NORMAL"] = 0] = "NORMAL";
     gameModes[gameModes["NOPAUSE"] = 1] = "NOPAUSE";
-    gameModes[gameModes["HALFCASH"] = 2] = "HALFCASH";
+    gameModes[gameModes["RECESSION"] = 2] = "RECESSION";
 })(gameModes || (gameModes = {}));

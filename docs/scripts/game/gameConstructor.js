@@ -1,7 +1,8 @@
 import { difficulties, gameModes } from "./gameModes.js";
+import { gameSession } from "./gameSession.js";
 class GameConstructor {
     constructor() {
-        this.trackName = "Logs" /* TRACK1 */;
+        this.trackName = "2" /* TRACK1 */;
         this.difficulty = difficulties.EASY;
         this.gameMode = gameModes.NORMAL;
     }
@@ -16,6 +17,9 @@ class GameConstructor {
         if (this.gameMode >= Object.values(gameModes).length / 2) {
             this.gameMode = 0;
         }
+    }
+    createGameSession() {
+        gameSession.initialize(this.trackName, this.difficulty, this.gameMode);
     }
 }
 const gameConstructor = new GameConstructor();

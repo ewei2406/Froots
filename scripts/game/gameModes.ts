@@ -1,12 +1,12 @@
 export enum difficulties {
-    EASY = 0,
-    MEDIUM = 1,
-    HARD = 2,
-    DEATH = 3
+    EASY,
+    MEDIUM,
+    HARD,
+    DEATH
 }
 
 export enum gameModes {
-    NORMAL = 0,
-    NOPAUSE = 1,
-    HALFCASH = 2
+    NORMAL,
+    NOPAUSE,
+    RECESSION
 }

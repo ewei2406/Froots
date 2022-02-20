@@ -1,4 +1,4 @@
-import { screenNames, Screens } from "./Screens";
+import { screenNames, Screens } from "./Screens.js";
 
 export enum Settings {
     DEBUG="DEBUG",

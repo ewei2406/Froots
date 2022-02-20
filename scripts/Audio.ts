@@ -1,7 +1,8 @@
 export enum audios {
     SELECT="select.wav",
     EXPLOSION="explosion.wav",
-    SHOOTLASER="shootLaser.wav"
+    SHOOTLASER="shootLaser.wav",
+    DESTROY="destroy.wav"
 }
 
 class AudioPlayer {
@@ -32,23 +33,16 @@ class AudioPlayer {
     }
 
     playAudio(audioName: audios) {
-        switch(audioName) {
-            case audios.SELECT:
-                this.playRawAudio(audioName, this.globalVolume, 0.045)
-                break;
-            default:
-                this.playRawAudio(audioName, this.globalVolume, 0)
-        }
+        this.playRawAudio(audioName, this.globalVolume)
     }
 
-    playRawAudio(audioName: audios, volume: number, delay: number) {
+    playRawAudio(audioName: audios, volume: number) {
+        console.log("PLAYING: " + audioName);
         
         if (audioName in this.sounds) {
-            const a = this.sounds[audioName].cloneNode()
+            const a = this.sounds[audioName].cloneNode(true)
             a.volume = volume
-            a.currentTime = delay
             a.play()
-            return a
         } else {
             console.log(`Failed to play sound ${audioName}: not found`)
         }
@@ -58,7 +52,8 @@ class AudioPlayer {
 const audioPlayer = new AudioPlayer(
     audios.EXPLOSION, 
     audios.SELECT, 
-    audios.SHOOTLASER
+    audios.SHOOTLASER,
+    audios.DESTROY
     )
 
 export { audioPlayer }

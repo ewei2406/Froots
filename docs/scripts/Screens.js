@@ -9,6 +9,7 @@ import { TrackSelector } from "./ui/TrackButton.js";
 import { TrackUiObject } from "./game/tracks.js";
 import { gameConstructor } from "./game/gameConstructor.js";
 import { difficulties, gameModes } from "./game/gameModes.js";
+import { gameSession } from "./game/gameSession.js";
 class DebugScreen extends Screen {
     constructor() {
         super();
@@ -145,6 +146,7 @@ class DifModeSelect extends Screen {
         this.addUiObject(gameButton);
         // Start
         const startButton = new Button("START!", 380, 260, 10, () => {
+            gameConstructor.createGameSession();
             session.setCurrentScreen("INGAME" /* INGAME */);
         });
         startButton.x -= startButton.w;
@@ -158,6 +160,25 @@ class DifModeSelect extends Screen {
 class InGame extends Screen {
     constructor() {
         super();
+        this.addUiObject(gameSession);
+    }
+    onLoad() {
+        console.log("INGAME");
+    }
+    update() {
+        gameSession.update();
+    }
+}
+class Lose extends Screen {
+    constructor() {
+        super();
+        this.addUiObject(gameSession);
+    }
+    onLoad() {
+        console.log("LOSE!");
+    }
+    update() {
+        null;
     }
 }
 export class Screens {
@@ -179,6 +200,7 @@ function makeScreens() {
     screens.addScreen(new LevelSelectScreen(), "LVLS" /* LEVELSELECT */);
     screens.addScreen(new DifModeSelect(), "LVLS2" /* DIFMODESELECT */);
     screens.addScreen(new InGame(), "INGAME" /* INGAME */);
+    screens.addScreen(new Lose(), "LOSE" /* LOSE */);
     return (screens);
 }
 export { makeScreens };

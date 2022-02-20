@@ -3,6 +3,7 @@ export var audios;
     audios["SELECT"] = "select.wav";
     audios["EXPLOSION"] = "explosion.wav";
     audios["SHOOTLASER"] = "shootLaser.wav";
+    audios["DESTROY"] = "destroy.wav";
 })(audios || (audios = {}));
 class AudioPlayer {
     constructor(...audioNames) {
@@ -27,26 +28,19 @@ class AudioPlayer {
         return true;
     }
     playAudio(audioName) {
-        switch (audioName) {
-            case audios.SELECT:
-                this.playRawAudio(audioName, this.globalVolume, 0.045);
-                break;
-            default:
-                this.playRawAudio(audioName, this.globalVolume, 0);
-        }
+        this.playRawAudio(audioName, this.globalVolume);
     }
-    playRawAudio(audioName, volume, delay) {
+    playRawAudio(audioName, volume) {
+        console.log("PLAYING: " + audioName);
         if (audioName in this.sounds) {
-            const a = this.sounds[audioName].cloneNode();
+            const a = this.sounds[audioName].cloneNode(true);
             a.volume = volume;
-            a.currentTime = delay;
             a.play();
-            return a;
         }
         else {
             console.log(`Failed to play sound ${audioName}: not found`);
         }
     }
 }
-const audioPlayer = new AudioPlayer(audios.EXPLOSION, audios.SELECT, audios.SHOOTLASER);
+const audioPlayer = new AudioPlayer(audios.EXPLOSION, audios.SELECT, audios.SHOOTLASER, audios.DESTROY);
 export { audioPlayer };

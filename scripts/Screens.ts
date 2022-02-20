@@ -9,6 +9,7 @@ import { TrackSelector } from "./ui/TrackButton.js";
 import { TrackUiObject } from "./game/tracks.js";
 import { gameConstructor } from "./game/gameConstructor.js";
 import { difficulties, gameModes } from "./game/gameModes.js";
+import { gameSession } from "./game/gameSession.js";
 
 
 class DebugScreen extends Screen {
@@ -197,6 +198,7 @@ class DifModeSelect extends Screen {
 
         // Start
         const startButton = new Button("START!", 380, 260, 10, () => {
+            gameConstructor.createGameSession()
             session.setCurrentScreen(screenNames.INGAME)
         })
         startButton.x -= startButton.w
@@ -212,7 +214,31 @@ class DifModeSelect extends Screen {
 class InGame extends Screen {
     constructor() {
         super()
+        this.addUiObject(gameSession)
+    }
 
+    onLoad(): void {
+        console.log("INGAME");
+        
+    }
+
+    update(): void {
+        gameSession.update()
+    }
+}
+
+class Lose extends Screen {
+    constructor() {
+        super()
+        this.addUiObject(gameSession)
+    }
+
+    onLoad(): void {
+        console.log("LOSE!");
+    }
+
+    update(): void {
+        null
     }
 }
 
@@ -222,7 +248,8 @@ export const enum screenNames {
     SETTINGS = "SETTINGS",
     LEVELSELECT = "LVLS",
     DIFMODESELECT = "LVLS2",
-    INGAME = "INGAME"
+    INGAME = "INGAME",
+    LOSE = "LOSE"
 }
 
 export class Screens {
@@ -247,6 +274,7 @@ function makeScreens(): any {
     screens.addScreen(new LevelSelectScreen(), screenNames.LEVELSELECT)
     screens.addScreen(new DifModeSelect(), screenNames.DIFMODESELECT)
     screens.addScreen(new InGame(), screenNames.INGAME)
+    screens.addScreen(new Lose(), screenNames.LOSE)
 
     return (
         screens
