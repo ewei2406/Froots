@@ -6,7 +6,7 @@ export enum Settings {
 }
 
 const settings = {
-    DEBUG: false,
+    DEBUG: true,
     POSTPROCESSING: true
 }
 

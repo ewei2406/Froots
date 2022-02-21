@@ -166,13 +166,6 @@ export const enum TrackNames {
     TRACK3 = "Pain"
 }
 
-const tracks = new Tracks()
-tracks.addTrack(new Track([[5, 5], [35, 5], [35, 15], [5, 15], [5, 25], [35, 25]], 40, 30), TrackNames.TRACK1)
-tracks.addTrack(new Track([[5, 5], [15, 20], [25, 10], [35, 25]], 40, 30), TrackNames.TRACK2)
-tracks.addTrack(new Track([[5, 5], [35, 25]], 40, 30), TrackNames.TRACK3)
-
-export { tracks }
-
 export class TrackUiObject extends UiObject {
 
     trackName: TrackNames
@@ -229,3 +222,10 @@ export class TrackUiObject extends UiObject {
         
     }
 }
+
+const tracks = new Tracks()
+tracks.addTrack(new Track([[0, 5], [35, 5], [35, 15], [5, 15], [5, 25], [40, 25]], 40, 30), TrackNames.TRACK1)
+tracks.addTrack(new Track([[0, 5], [15, 20], [25, 10], [40, 25]], 40, 30), TrackNames.TRACK2)
+tracks.addTrack(new Track([[0, 5], [40, 25]], 40, 30), TrackNames.TRACK3)
+
+export { tracks }

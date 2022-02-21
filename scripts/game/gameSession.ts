@@ -10,6 +10,7 @@ import { TextObject } from "../ui/Text.js";
 import { UiObject } from "../ui/UiObject.js";
 import { Enemy } from "./enemy.js";
 import { difficulties, gameModes } from "./gameModes.js";
+import { Projectile } from "./projectile.js";
 import { gameModeRounds, Round, Rounds } from "./rounds.js";
 import { Tower } from "./tower.js";
 import { Track, TrackNames, tracks } from "./tracks.js";
@@ -50,6 +51,8 @@ export class GameSession extends UiObject {
     towers: Array<Tower>
     selectedTower: Tower
 
+    projectiles: Array<Projectile>
+
     constructor() {
         super(0, 0, canvas.width, canvas.height)
 
@@ -68,6 +71,7 @@ export class GameSession extends UiObject {
         this.gameMode = gameMode
         this.enemies = []
         this.towers = []
+        this.projectiles = []
         this.track = tracks.getTrack(this.trackName)
 
         switch(difficulty) {
@@ -97,12 +101,18 @@ export class GameSession extends UiObject {
         this.currentState = sessionState.WAITING
         this.startButton.disabled = false
 
-        this.addTower(new Tower(100, 100))
-        this.addTower(new Tower(150, 100))
+        this.addTower(new Tower(100, 80))
+        this.addTower(new Tower(150, 80))
+
+        this.addProjectile(new Projectile(100, 100, 10, 1, 0, 0, 20))
     }
     
     addTower(tower: Tower) {
         this.towers.push(tower)
+    }
+
+    addProjectile(projectile: Projectile) {
+        this.projectiles.push(projectile)
     }
 
     setSelectedTower(tower: Tower) {
@@ -144,6 +154,10 @@ export class GameSession extends UiObject {
         if (this.selectedTower) this.selectedTower.drawRange()
     }
 
+    drawProjectiles() {
+        this.projectiles.forEach(p => p.draw())
+    }
+
     draw(): void {
         
         this.drawTrack()
@@ -152,6 +166,7 @@ export class GameSession extends UiObject {
 
         this.drawEnemies()
         this.drawTowers()
+        this.drawProjectiles()
 
         this.drawHUD()
 
@@ -194,7 +209,7 @@ export class GameSession extends UiObject {
                 this.loseLives(e.health)
                 return false
             } else {
-                return true
+                return e.isAlive()
             }
         })
     }
@@ -216,9 +231,15 @@ export class GameSession extends UiObject {
         this.towers.forEach(t => t.update())
     }
 
+    updateProjectiles() {
+        this.projectiles = this.projectiles.filter(p => {
+            p.update()
+            return p.isAlive()
+        })
+    }
+
     update(): void {
         // this.HUD.track.text = "" + this.trackName
-
         this.startButton.update()
         this.pauseButton.update()
 
@@ -230,15 +251,15 @@ export class GameSession extends UiObject {
             }
         }
 
-        this.updateEnemies()
-        this.updateTrack()
-
         if (cursor.click && this.selectedTower) {
             this.setSelectedTower(null)
             audioPlayer.playAudio(audios.CLOSE)
         }
 
         this.updateTowers()
+        this.updateEnemies()
+        this.updateTrack()
+        this.updateProjectiles()
         this.updateHUD()
     }
 

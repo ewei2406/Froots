@@ -165,6 +165,10 @@ export class Canvas {
         this.arrowDegTo(x1, y1, theta, magnitude, headsize)
     }
 
+    public drawPixel(x: number, y: number, size: number, color: Color) {
+        this.fillRect(x - size / 2, y - size / 2, size, size, color)
+    }
+
     // PIXEL MANIPULATION
 
     public getPixel(x: number, y: number) {

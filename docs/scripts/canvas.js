@@ -102,6 +102,9 @@ export class Canvas {
         const magnitude = Math.sqrt(Math.pow((y2 - y1), 2) + Math.pow((x2 - x1), 2));
         this.arrowDegTo(x1, y1, theta, magnitude, headsize);
     }
+    drawPixel(x, y, size, color) {
+        this.fillRect(x - size / 2, y - size / 2, size, size, color);
+    }
     // PIXEL MANIPULATION
     getPixel(x, y) {
         const idx = (y * this.imageData.width * 4) + (x * 4);

@@ -4,7 +4,7 @@ export var Settings;
     Settings["POSTPROCESSING"] = "POSTPROCESSING";
 })(Settings || (Settings = {}));
 const settings = {
-    DEBUG: false,
+    DEBUG: true,
     POSTPROCESSING: true
 };
 class Session {

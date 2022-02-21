@@ -8,6 +8,7 @@ import { cursor } from "../ui/Cursor.js";
 import { TextObject } from "../ui/Text.js";
 import { UiObject } from "../ui/UiObject.js";
 import { difficulties, gameModes } from "./gameModes.js";
+import { Projectile } from "./projectile.js";
 import { gameModeRounds } from "./rounds.js";
 import { Tower } from "./tower.js";
 import { tracks } from "./tracks.js";
@@ -41,6 +42,7 @@ export class GameSession extends UiObject {
         this.gameMode = gameMode;
         this.enemies = [];
         this.towers = [];
+        this.projectiles = [];
         this.track = tracks.getTrack(this.trackName);
         switch (difficulty) {
             case difficulties.MEDIUM:
@@ -66,11 +68,15 @@ export class GameSession extends UiObject {
         this.currentRound = this.roundQueue.getRound(1);
         this.currentState = sessionState.WAITING;
         this.startButton.disabled = false;
-        this.addTower(new Tower(100, 100));
-        this.addTower(new Tower(150, 100));
+        this.addTower(new Tower(100, 80));
+        this.addTower(new Tower(150, 80));
+        this.addProjectile(new Projectile(100, 100, 10, 1, 0, 0, 20));
     }
     addTower(tower) {
         this.towers.push(tower);
+    }
+    addProjectile(projectile) {
+        this.projectiles.push(projectile);
     }
     setSelectedTower(tower) {
         if (this.selectedTower)
@@ -106,12 +112,16 @@ export class GameSession extends UiObject {
         if (this.selectedTower)
             this.selectedTower.drawRange();
     }
+    drawProjectiles() {
+        this.projectiles.forEach(p => p.draw());
+    }
     draw() {
         this.drawTrack();
         this.drawTrackStart();
         this.drawTrackEnd();
         this.drawEnemies();
         this.drawTowers();
+        this.drawProjectiles();
         this.drawHUD();
         this.startButton.draw();
         this.pauseButton.draw();
@@ -147,7 +157,7 @@ export class GameSession extends UiObject {
                 return false;
             }
             else {
-                return true;
+                return e.isAlive();
             }
         });
     }
@@ -165,6 +175,12 @@ export class GameSession extends UiObject {
     updateTowers() {
         this.towers.forEach(t => t.update());
     }
+    updateProjectiles() {
+        this.projectiles = this.projectiles.filter(p => {
+            p.update();
+            return p.isAlive();
+        });
+    }
     update() {
         // this.HUD.track.text = "" + this.trackName
         this.startButton.update();
@@ -175,13 +191,14 @@ export class GameSession extends UiObject {
                 this.endCurrentRound();
             }
         }
-        this.updateEnemies();
-        this.updateTrack();
         if (cursor.click && this.selectedTower) {
             this.setSelectedTower(null);
             audioPlayer.playAudio(audios.CLOSE);
         }
         this.updateTowers();
+        this.updateEnemies();
+        this.updateTrack();
+        this.updateProjectiles();
         this.updateHUD();
     }
     onLoad() {

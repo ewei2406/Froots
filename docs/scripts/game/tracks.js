@@ -114,11 +114,6 @@ export class Tracks {
         return new TrackUiObject(trackName, x, y, w, h);
     }
 }
-const tracks = new Tracks();
-tracks.addTrack(new Track([[5, 5], [35, 5], [35, 15], [5, 15], [5, 25], [35, 25]], 40, 30), "2" /* TRACK1 */);
-tracks.addTrack(new Track([[5, 5], [15, 20], [25, 10], [35, 25]], 40, 30), "Zig Zag" /* TRACK2 */);
-tracks.addTrack(new Track([[5, 5], [35, 25]], 40, 30), "Pain" /* TRACK3 */);
-export { tracks };
 export class TrackUiObject extends UiObject {
     constructor(trackName, x, y, w, h, showEndpoint = false) {
         super(x, y, w, h);
@@ -154,3 +149,8 @@ export class TrackUiObject extends UiObject {
         canvas.finishLine();
     }
 }
+const tracks = new Tracks();
+tracks.addTrack(new Track([[0, 5], [35, 5], [35, 15], [5, 15], [5, 25], [40, 25]], 40, 30), "2" /* TRACK1 */);
+tracks.addTrack(new Track([[0, 5], [15, 20], [25, 10], [40, 25]], 40, 30), "Zig Zag" /* TRACK2 */);
+tracks.addTrack(new Track([[0, 5], [40, 25]], 40, 30), "Pain" /* TRACK3 */);
+export { tracks };
