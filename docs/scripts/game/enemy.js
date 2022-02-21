@@ -1,13 +1,26 @@
 import { canvas } from "../Canvas.js";
 import { colors } from "../Color.js";
+import { gameSession } from "./gameSession.js";
+var enemyTypes;
+(function (enemyTypes) {
+    enemyTypes[enemyTypes["REGULAR"] = 0] = "REGULAR";
+})(enemyTypes || (enemyTypes = {}));
 export class Enemy {
-    constructor(distance, health, size) {
-        this.speed = 5;
+    constructor(health, type = enemyTypes.REGULAR, distance = 0) {
         this.x = 0;
         this.y = 0;
         this.distance = distance;
         this.health = health;
-        this.size = size;
+        this.type = type;
+        switch (this.type) {
+            case enemyTypes.REGULAR:
+                this.speed = Math.min(0.25 * (this.health + gameSession.difficulty) + .75, 6);
+                this.size = 5 + this.health;
+                break;
+            default:
+                this.speed = 1;
+                this.size = 10;
+        }
     }
     update(track) {
         this.distance += this.speed;
@@ -20,18 +33,5 @@ export class Enemy {
     }
     drawBoundingBox() {
         canvas.strokeRect(this.x - (this.size / 2), this.y - (this.size / 2), this.size, this.size, colors.DEBUG, 1);
-    }
-}
-class RegularEnemy extends Enemy {
-    constructor(distance, health) {
-        super(distance, health, 10);
-        switch (true) {
-            case this.health >= 6:
-                this.speed = 2;
-                break;
-            default:
-                this.speed = this.health * 0.33;
-                break;
-        }
     }
 }

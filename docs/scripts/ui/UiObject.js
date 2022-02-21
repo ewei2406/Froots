@@ -7,13 +7,13 @@ function generateId() {
     return id;
 }
 export class UiObject {
-    constructor(x, y, w, h) {
-        this.color = colors.SOLID;
+    constructor(x, y, w, h, color = colors.SOLID) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.id = generateId();
+        this.color = color;
     }
     draw() {
         canvas.fillRect(this.x, this.y, this.w, this.h, this.color);

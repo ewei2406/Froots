@@ -35,6 +35,7 @@ export class Track {
     length: 0
     startColor = colors.SOLID
     endColor = colors.SOLID
+    nodeSize = 10
 
     constructor(nodes: Array<Array<number>>, n_width: number, n_height: number) {
         this.nodes = []
@@ -60,7 +61,7 @@ export class Track {
 
     draw() {
         const startNode = this.nodes[0]
-        canvas.startLine(startNode.x, startNode.y, 15, colors.BRIGHT)
+        canvas.startLine(startNode.x, startNode.y, 1.5, colors.MEDIUM)
 
         for (let i = 1; i < this.nodes.length; i++) {
             const node = this.nodes[i]
@@ -69,38 +70,38 @@ export class Track {
 
         canvas.finishLine()
 
-        canvas.startLine(startNode.x, startNode.y, 10, colors.EMPTY)
+        // canvas.startLine(startNode.x, startNode.y, 10, colors.EMPTY)
 
-        for (let i = 1; i < this.nodes.length; i++) {
-            const node = this.nodes[i]
-            canvas.lineTo(node.x, node.y)
-        }
+        // for (let i = 1; i < this.nodes.length; i++) {
+        //     const node = this.nodes[i]
+        //     canvas.lineTo(node.x, node.y)
+        // }
 
-        canvas.finishLine()
+        // canvas.finishLine()
     }
 
     drawStart() {
         const startNode = this.nodes[0]
         canvas.fillRect(
-            startNode.x - 10, 
-            startNode.y - 10, 
-            20, 20, colors.SOLID)
+            startNode.x - (this.nodeSize / 2), 
+            startNode.y - (this.nodeSize / 2), 
+            this.nodeSize, this.nodeSize, colors.SOLID)
         canvas.strokeRect(
-            startNode.x - 10,
-            startNode.y - 10,
-            20, 20, this.startColor)
+            startNode.x - (this.nodeSize / 2),
+            startNode.y - (this.nodeSize / 2),
+            this.nodeSize, this.nodeSize, this.startColor)
     }
 
     drawEnd() {
         const endNode = this.nodes[this.nodes.length - 1]
         canvas.fillRect(
-            endNode.x - 10, 
-            endNode.y - 10, 
-            20, 20, colors.EMPTY)
+            endNode.x - (this.nodeSize / 2), 
+            endNode.y - (this.nodeSize / 2), 
+            this.nodeSize, this.nodeSize, colors.EMPTY)
         canvas.strokeRect(
-            endNode.x - 10,
-            endNode.y - 10,
-            20, 20, this.endColor)
+            endNode.x - (this.nodeSize / 2),
+            endNode.y - (this.nodeSize / 2),
+            this.nodeSize, this.nodeSize, this.endColor)
     }
 
     getPosition(distance: number): Point {

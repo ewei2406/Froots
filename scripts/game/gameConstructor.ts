@@ -24,6 +24,24 @@ class GameConstructor {
     createGameSession(): void {
         gameSession.initialize(this.trackName, this.difficulty, this.gameMode)
     }
+
+    getTrackName(): TrackNames {
+        return this.trackName
+    }
+
+    getDifficulty(): difficulties {
+        return this.difficulty
+    }
+
+    getGameMode(): gameModes {
+        return this.gameMode
+    }
+
+    reset() {
+        this.trackName = TrackNames.TRACK1
+        this.difficulty = difficulties.EASY
+        this.gameMode = gameModes.NORMAL
+    }
 }
 
 const gameConstructor = new GameConstructor()

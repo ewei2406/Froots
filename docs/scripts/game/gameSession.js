@@ -6,33 +6,38 @@ import { session } from "../Session.js";
 import { Button } from "../ui/Button.js";
 import { TextObject } from "../ui/Text.js";
 import { UiObject } from "../ui/UiObject.js";
-import { Enemy } from "./enemy.js";
 import { difficulties } from "./gameModes.js";
+import { gameModeRounds } from "./rounds.js";
 import { tracks } from "./tracks.js";
-class GameSession extends UiObject {
+var sessionState;
+(function (sessionState) {
+    sessionState[sessionState["WAITING"] = 0] = "WAITING";
+    sessionState[sessionState["ROUND"] = 1] = "ROUND";
+})(sessionState || (sessionState = {}));
+export class GameSession extends UiObject {
     constructor() {
         super(0, 0, canvas.width, canvas.height);
         this.startFlash = 0;
         this.endFlash = 0;
         this.HUD = {
             // "track": new TextObject("T", 30, 5, 10, Fonts.BODY, colors.SOLID),
-            "currentRound": new TextObject("R", 5, 285, 10, Fonts.BODY, colors.SOLID),
+            "roundNumber": new TextObject("R", 5, 285, 10, Fonts.BODY, colors.SOLID),
             "lives": new TextObject("♥", 30, 5, 10, Fonts.BODY, colors.SOLID),
             "cash": new TextObject("$", 30, 15, 10, Fonts.BODY, colors.SOLID),
         };
-        this.startButton = new Button("START ROUND", 301, 275, 10, () => null);
+        this.startButton = new Button("NEXT ROUND", 301, 275, 10, () => null);
         this.pauseButton = new Button("❚❚", 7, 5, 10, () => null);
         this.startButton.onClick = (function () {
-            this.addEnemy();
+            this.startNextRound();
         }).bind(this);
     }
     initialize(trackName, difficulty, gameMode) {
+        console.log("INITALIZED!");
         this.trackName = trackName;
         this.difficulty = difficulty;
         this.gameMode = gameMode;
         this.enemies = [];
         this.track = tracks.getTrack(this.trackName);
-        this.currentRound = 0;
         switch (difficulty) {
             case difficulties.MEDIUM:
                 this.cash = 800;
@@ -52,10 +57,14 @@ class GameSession extends UiObject {
                 break;
         }
         this.startButton.calcSize();
-        this.addEnemy();
+        this.roundNumber = 0;
+        this.roundQueue = gameModeRounds.getGameModeRounds(this.gameMode);
+        this.currentRound = this.roundQueue.getRound(1);
+        this.currentState = sessionState.WAITING;
+        this.startButton.disabled = false;
     }
-    addEnemy() {
-        this.enemies.push(new Enemy(0, 10, 20));
+    addEnemy(enemy) {
+        this.enemies.push(enemy);
         this.startFlash = 5;
     }
     drawTrack() {
@@ -68,7 +77,7 @@ class GameSession extends UiObject {
         this.track.drawEnd();
     }
     drawHUD() {
-        this.HUD.currentRound.draw();
+        this.HUD.roundNumber.draw();
         this.HUD.cash.draw();
         this.HUD.lives.draw();
         // this.HUD.track.draw()
@@ -90,8 +99,31 @@ class GameSession extends UiObject {
             session.currentScreen = "LOSE" /* LOSE */;
         }
     }
+    startNextRound() {
+        if (this.roundNumber < this.roundQueue.length) {
+            this.startButton.disabled = true;
+            this.currentState = sessionState.ROUND;
+            this.currentRound = this.roundQueue.getRound(this.roundNumber + 1);
+        }
+    }
+    endCurrentRound() {
+        this.currentState = sessionState.WAITING;
+        this.startButton.disabled = false;
+        this.roundNumber++;
+        if (this.roundNumber == this.roundQueue.length) {
+            session.currentScreen = "WIN" /* WIN */;
+        }
+    }
     update() {
         // this.HUD.track.text = "" + this.trackName
+        this.startButton.update();
+        this.pauseButton.update();
+        if (this.currentState == sessionState.ROUND) {
+            this.currentRound.update();
+            if (this.currentRound.numRemaining == 0 && this.enemies.length == 0) {
+                this.endCurrentRound();
+            }
+        }
         this.enemies = this.enemies.filter(e => {
             e.update(this.track);
             if (e.distance >= this.track.length) { // Enemy escaped!
@@ -102,15 +134,13 @@ class GameSession extends UiObject {
                 return true;
             }
         });
-        this.HUD.currentRound.text = "R " + this.currentRound + "/10";
+        this.HUD.roundNumber.text = "R " + this.roundNumber + "/" + this.roundQueue.length;
         this.HUD.cash.text = "$ " + this.cash;
         this.HUD.lives.text = "♥ " + this.lives;
         this.startFlash -= this.startFlash > 0 ? 1 : 0;
         this.endFlash -= this.endFlash > 0 ? 1 : 0;
         this.track.startColor = this.startFlash > 0 ? colors.ULTRABRIGHT : colors.SOLID;
         this.track.endColor = this.endFlash > 0 ? colors.ULTRABRIGHT : colors.SOLID;
-        this.startButton.update();
-        this.pauseButton.update();
     }
 }
 const gameSession = new GameSession();

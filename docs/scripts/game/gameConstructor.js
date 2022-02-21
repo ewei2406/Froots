@@ -21,6 +21,20 @@ class GameConstructor {
     createGameSession() {
         gameSession.initialize(this.trackName, this.difficulty, this.gameMode);
     }
+    getTrackName() {
+        return this.trackName;
+    }
+    getDifficulty() {
+        return this.difficulty;
+    }
+    getGameMode() {
+        return this.gameMode;
+    }
+    reset() {
+        this.trackName = "2" /* TRACK1 */;
+        this.difficulty = difficulties.EASY;
+        this.gameMode = gameModes.NORMAL;
+    }
 }
 const gameConstructor = new GameConstructor();
 export { gameConstructor };

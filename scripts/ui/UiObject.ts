@@ -1,6 +1,6 @@
 import { gameObject } from "../gameObjects.js"
 import { canvas } from "../Canvas.js"
-import { colors } from "../Color.js"
+import { Color, colors } from "../Color.js"
 
 let maxId = 0
 
@@ -16,14 +16,15 @@ export class UiObject implements gameObject {
     w: number
     h: number
     id: number
-    color = colors.SOLID
+    color: Color
 
-    constructor(x: number, y: number, w: number, h: number) {
+    constructor(x: number, y: number, w: number, h: number, color=colors.SOLID) {
         this.x = x
         this.y = y
         this.w = w
         this.h = h
         this.id = generateId()
+        this.color = color
     }
 
     draw() {

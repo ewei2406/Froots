@@ -6,13 +6,13 @@ export enum Settings {
 }
 
 const settings = {
-    DEBUG: true,
+    DEBUG: false,
     POSTPROCESSING: true
 }
 
 class Session {
     settings = settings
-    currentScreen = screenNames.DIFMODESELECT
+    currentScreen = screenNames.TITLE
     screens: Screens
 
     setScreens(screens: Screens) {

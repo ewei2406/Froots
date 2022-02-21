@@ -4,13 +4,13 @@ export var Settings;
     Settings["POSTPROCESSING"] = "POSTPROCESSING";
 })(Settings || (Settings = {}));
 const settings = {
-    DEBUG: true,
+    DEBUG: false,
     POSTPROCESSING: true
 };
 class Session {
     constructor() {
         this.settings = settings;
-        this.currentScreen = "LVLS2" /* DIFMODESELECT */;
+        this.currentScreen = "TITLE" /* TITLE */;
     }
     setScreens(screens) {
         this.screens = screens;

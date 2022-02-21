@@ -10,6 +10,7 @@ import { TrackUiObject } from "./game/tracks.js";
 import { gameConstructor } from "./game/gameConstructor.js";
 import { difficulties, gameModes } from "./game/gameModes.js";
 import { gameSession } from "./game/gameSession.js";
+import { UiObject } from "./ui/UiObject.js";
 class DebugScreen extends Screen {
     constructor() {
         super();
@@ -113,23 +114,27 @@ class DifModeSelect extends Screen {
         // TITLE
         const title = new Heading(gameConstructor.trackName, 20, 100, 20);
         title.onLoad = (function () {
-            this.text = gameConstructor.trackName;
+            this.text = gameConstructor.getTrackName();
         }).bind(title);
         this.addUiObject(title);
         // TRACK
         const currentTrack = new TrackUiObject(gameConstructor.trackName, 180, 100, 200, 150, true);
         currentTrack.onLoad = (function () {
-            this.trackName = gameConstructor.trackName;
+            this.trackName = gameConstructor.getTrackName();
         }).bind(currentTrack);
         this.addUiObject(currentTrack);
         // DIFFICULTY
         this.addUiObject(new TextObject("DIFFICULTY", 20, 140, 10, Fonts.BODY, colors.SOLID));
         this.addUiObject(new TextObject("▲", 20, 155, 9, Fonts.BODY, colors.SOLID));
         this.addUiObject(new TextObject("▼", 20, 165, 9, Fonts.BODY, colors.SOLID));
-        const difButton = new Button(difficulties[gameConstructor.difficulty], 35, 155, 10, () => null);
+        const difButton = new Button(difficulties[gameConstructor.getDifficulty()], 35, 155, 10, () => null);
         difButton.onClick = (function () {
             gameConstructor.cycleDifficulty();
-            this.text = difficulties[gameConstructor.difficulty];
+            this.text = difficulties[gameConstructor.getDifficulty()];
+            this.calcSize();
+        }).bind(difButton);
+        difButton.onLoad = (function () {
+            this.text = difficulties[gameConstructor.getDifficulty()];
             this.calcSize();
         }).bind(difButton);
         this.addUiObject(difButton);
@@ -137,10 +142,14 @@ class DifModeSelect extends Screen {
         this.addUiObject(new TextObject("GAME MODE", 20, 185, 10, Fonts.BODY, colors.SOLID));
         this.addUiObject(new TextObject("▲", 20, 200, 9, Fonts.BODY, colors.SOLID));
         this.addUiObject(new TextObject("▼", 20, 210, 9, Fonts.BODY, colors.SOLID));
-        const gameButton = new Button(gameModes[gameConstructor.gameMode], 35, 200, 10, () => null);
+        const gameButton = new Button(gameModes[gameConstructor.getGameMode()], 35, 200, 10, () => null);
         gameButton.onClick = (function () {
             gameConstructor.cycleGameMode();
-            this.text = gameModes[gameConstructor.gameMode];
+            this.text = gameModes[gameConstructor.getGameMode()];
+            this.calcSize();
+        }).bind(gameButton);
+        gameButton.onLoad = (function () {
+            this.text = gameModes[gameConstructor.getGameMode()];
             this.calcSize();
         }).bind(gameButton);
         this.addUiObject(gameButton);
@@ -172,13 +181,47 @@ class InGame extends Screen {
 class Lose extends Screen {
     constructor() {
         super();
-        this.addUiObject(gameSession);
+        this.addUiObject(new UiObject(0, 0, this.canvas.width, this.canvas.height, colors.DARKEN));
+        this.addUiObject(new Heading("You Lose!", 20, 20, 40));
+        this.addUiObject(new Button("EXIT TO TITLE", 20, 235, 10, () => {
+            gameConstructor.reset();
+            session.setCurrentScreen("TITLE" /* TITLE */);
+        }));
+        this.addUiObject(new Button("RETRY", 20, 260, 10, () => {
+            session.setCurrentScreen("LVLS2" /* DIFMODESELECT */);
+        }));
     }
     onLoad() {
         console.log("LOSE!");
     }
-    update() {
-        null;
+    draw() {
+        this.canvas.clear();
+        this.canvas.screenFill(colors.EMPTY); // Set the background color
+        gameSession.draw();
+        this.UiObjects.forEach(e => e.draw());
+    }
+}
+class Win extends Screen {
+    constructor() {
+        super();
+        this.addUiObject(new UiObject(0, 0, this.canvas.width, this.canvas.height, colors.DARKEN));
+        this.addUiObject(new Heading("You Win!", 20, 20, 40));
+        this.addUiObject(new Button("EXIT TO TITLE", 20, 235, 10, () => {
+            gameConstructor.reset();
+            session.setCurrentScreen("TITLE" /* TITLE */);
+        }));
+        this.addUiObject(new Button("RETRY", 20, 260, 10, () => {
+            session.setCurrentScreen("LVLS2" /* DIFMODESELECT */);
+        }));
+    }
+    onLoad() {
+        console.log("LOSE!");
+    }
+    draw() {
+        this.canvas.clear();
+        this.canvas.screenFill(colors.EMPTY); // Set the background color
+        gameSession.draw();
+        this.UiObjects.forEach(e => e.draw());
     }
 }
 export class Screens {
@@ -201,6 +244,7 @@ function makeScreens() {
     screens.addScreen(new DifModeSelect(), "LVLS2" /* DIFMODESELECT */);
     screens.addScreen(new InGame(), "INGAME" /* INGAME */);
     screens.addScreen(new Lose(), "LOSE" /* LOSE */);
+    screens.addScreen(new Win(), "WIN" /* WIN */);
     return (screens);
 }
 export { makeScreens };

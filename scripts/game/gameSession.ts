@@ -9,9 +9,15 @@ import { TextObject } from "../ui/Text.js";
 import { UiObject } from "../ui/UiObject.js";
 import { Enemy } from "./enemy.js";
 import { difficulties, gameModes } from "./gameModes.js";
+import { gameModeRounds, Round, Rounds } from "./rounds.js";
 import { Track, TrackNames, tracks } from "./tracks.js";
 
-class GameSession extends UiObject {
+
+enum sessionState {
+    WAITING, ROUND
+}
+
+export class GameSession extends UiObject {
 
     trackName: TrackNames
     difficulty: difficulties
@@ -22,15 +28,19 @@ class GameSession extends UiObject {
 
     HUD = {
         // "track": new TextObject("T", 30, 5, 10, Fonts.BODY, colors.SOLID),
-        "currentRound": new TextObject("R", 5, 285, 10, Fonts.BODY, colors.SOLID),
+        "roundNumber": new TextObject("R", 5, 285, 10, Fonts.BODY, colors.SOLID),
         "lives": new TextObject("♥", 30, 5, 10, Fonts.BODY, colors.SOLID),
         "cash": new TextObject("$", 30, 15, 10, Fonts.BODY, colors.SOLID),
     }
     
-    startButton = new Button("START ROUND", 301, 275, 10, () => null)
+    startButton = new Button("NEXT ROUND", 301, 275, 10, () => null)
     pauseButton = new Button("❚❚", 7, 5, 10, () => null)
 
-    currentRound: number
+    currentState: sessionState
+    currentRound: Round
+
+    roundNumber: number
+    roundQueue: Rounds
     cash: number
     lives: number
 
@@ -40,18 +50,19 @@ class GameSession extends UiObject {
         super(0, 0, canvas.width, canvas.height)
 
         this.startButton.onClick = (function () {
-            this.addEnemy()
+            this.startNextRound()
         }).bind(this)
     }
 
     initialize(trackName: TrackNames, difficulty: difficulties, gameMode: gameModes) {
+        console.log("INITALIZED!");
+        
         this.trackName = trackName
         this.difficulty = difficulty
         this.gameMode = gameMode
         this.enemies = []
         this.track = tracks.getTrack(this.trackName)
 
-        this.currentRound = 0
         switch(difficulty) {
             case difficulties.MEDIUM:
                 this.cash = 800
@@ -73,12 +84,16 @@ class GameSession extends UiObject {
 
         this.startButton.calcSize()
 
-        this.addEnemy()
+        this.roundNumber = 0
+        this.roundQueue = gameModeRounds.getGameModeRounds(this.gameMode)
+        this.currentRound = this.roundQueue.getRound(1)
+        this.currentState = sessionState.WAITING
+        this.startButton.disabled = false
     }
     
 
-    addEnemy() {
-        this.enemies.push(new Enemy(0, 10, 20))
+    addEnemy(enemy: Enemy) {
+        this.enemies.push(enemy)
         this.startFlash = 5
     }
 
@@ -95,7 +110,7 @@ class GameSession extends UiObject {
     }
 
     drawHUD() {
-        this.HUD.currentRound.draw()
+        this.HUD.roundNumber.draw()
         this.HUD.cash.draw()
         this.HUD.lives.draw()
         // this.HUD.track.draw()
@@ -125,8 +140,37 @@ class GameSession extends UiObject {
         }
     }
 
+    startNextRound(): void {
+        if (this.roundNumber < this.roundQueue.length) {
+            this.startButton.disabled = true
+            this.currentState = sessionState.ROUND
+            this.currentRound = this.roundQueue.getRound(this.roundNumber + 1)
+        }
+    }
+
+    endCurrentRound(): void {
+        this.currentState = sessionState.WAITING
+        this.startButton.disabled = false
+        this.roundNumber++
+
+        if (this.roundNumber == this.roundQueue.length) {
+            session.currentScreen = screenNames.WIN
+        }
+    }
+
     update(): void {
         // this.HUD.track.text = "" + this.trackName
+
+        this.startButton.update()
+        this.pauseButton.update()
+
+        if (this.currentState == sessionState.ROUND) {
+            this.currentRound.update()
+
+            if (this.currentRound.numRemaining == 0 && this.enemies.length == 0) {
+                this.endCurrentRound()
+            }
+        }
 
         this.enemies = this.enemies.filter(e => {
             e.update(this.track)
@@ -138,7 +182,7 @@ class GameSession extends UiObject {
             }
         })
 
-        this.HUD.currentRound.text = "R " + this.currentRound + "/10"
+        this.HUD.roundNumber.text = "R " + this.roundNumber + "/" + this.roundQueue.length
         this.HUD.cash.text = "$ " + this.cash
         this.HUD.lives.text = "♥ " + this.lives
 
@@ -146,9 +190,6 @@ class GameSession extends UiObject {
         this.endFlash -= this.endFlash > 0 ? 1 : 0
         this.track.startColor = this.startFlash > 0 ? colors.ULTRABRIGHT : colors.SOLID
         this.track.endColor = this.endFlash > 0 ? colors.ULTRABRIGHT : colors.SOLID
-
-        this.startButton.update()
-        this.pauseButton.update()
     }
 }
 

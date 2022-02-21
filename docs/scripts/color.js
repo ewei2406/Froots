@@ -1,15 +1,5 @@
 export class RgbColor {
-    constructor(r, g, b) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
-    }
-    toString() {
-        return `rgb(${this.r}, ${this.g}, ${this.b})`;
-    }
-}
-export class RgbaColor {
-    constructor(r, g, b, a) {
+    constructor(r, g, b, a = 1) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -24,6 +14,7 @@ class Colors {
         this.lifespan = 0;
         this.SOLID = new RgbColor(255, 0, 0);
         this.MEDIUM = new RgbColor(50, 0, 0);
+        this.DARKEN = new RgbColor(0, 0, 0, 0.8);
         this.EMPTY = new RgbColor(0, 0, 0);
         this.VOID = new RgbColor(0, 1, 0);
         this.DEBUG = new RgbColor(0, 255, 0);
