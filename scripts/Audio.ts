@@ -2,7 +2,9 @@ export enum audios {
     SELECT="select.wav",
     EXPLOSION="explosion.wav",
     SHOOTLASER="shootLaser.wav",
-    DESTROY="destroy.wav"
+    DESTROY="destroy.wav",
+    OPEN="open.wav",
+    CLOSE="close.wav"
 }
 
 class AudioPlayer {
@@ -53,7 +55,9 @@ const audioPlayer = new AudioPlayer(
     audios.EXPLOSION, 
     audios.SELECT, 
     audios.SHOOTLASER,
-    audios.DESTROY
+    audios.DESTROY,
+    audios.OPEN,
+    audios.CLOSE
     )
 
 export { audioPlayer }

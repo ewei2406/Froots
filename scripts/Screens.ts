@@ -226,11 +226,6 @@ class InGame extends Screen {
         this.addUiObject(gameSession)
     }
 
-    onLoad(): void {
-        console.log("INGAME");
-        
-    }
-
     update(): void {
         gameSession.update()
     }
@@ -253,10 +248,6 @@ class Lose extends Screen {
         this.addUiObject(new Button("RETRY", 20, 260, 10, () => {
             session.setCurrentScreen(screenNames.DIFMODESELECT)
         }))
-    }
-
-    onLoad(): void {
-        console.log("LOSE!");
     }
 
     draw(): void {
@@ -285,10 +276,6 @@ class Win extends Screen {
         this.addUiObject(new Button("RETRY", 20, 260, 10, () => {
             session.setCurrentScreen(screenNames.DIFMODESELECT)
         }))
-    }
-
-    onLoad(): void {
-        console.log("LOSE!");
     }
 
     draw(): void {

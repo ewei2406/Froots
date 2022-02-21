@@ -4,6 +4,8 @@ export var audios;
     audios["EXPLOSION"] = "explosion.wav";
     audios["SHOOTLASER"] = "shootLaser.wav";
     audios["DESTROY"] = "destroy.wav";
+    audios["OPEN"] = "open.wav";
+    audios["CLOSE"] = "close.wav";
 })(audios || (audios = {}));
 class AudioPlayer {
     constructor(...audioNames) {
@@ -42,5 +44,5 @@ class AudioPlayer {
         }
     }
 }
-const audioPlayer = new AudioPlayer(audios.EXPLOSION, audios.SELECT, audios.SHOOTLASER, audios.DESTROY);
+const audioPlayer = new AudioPlayer(audios.EXPLOSION, audios.SELECT, audios.SHOOTLASER, audios.DESTROY, audios.OPEN, audios.CLOSE);
 export { audioPlayer };

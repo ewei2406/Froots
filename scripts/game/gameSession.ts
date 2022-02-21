@@ -5,11 +5,13 @@ import { Fonts } from "../Font.js";
 import { screenNames, Screens } from "../Screens.js";
 import { session } from "../Session.js";
 import { Button } from "../ui/Button.js";
+import { cursor } from "../ui/Cursor.js";
 import { TextObject } from "../ui/Text.js";
 import { UiObject } from "../ui/UiObject.js";
 import { Enemy } from "./enemy.js";
 import { difficulties, gameModes } from "./gameModes.js";
 import { gameModeRounds, Round, Rounds } from "./rounds.js";
+import { Tower } from "./tower.js";
 import { Track, TrackNames, tracks } from "./tracks.js";
 
 
@@ -45,6 +47,8 @@ export class GameSession extends UiObject {
     lives: number
 
     enemies: Array<Enemy>
+    towers: Array<Tower>
+    selectedTower: Tower
 
     constructor() {
         super(0, 0, canvas.width, canvas.height)
@@ -52,6 +56,8 @@ export class GameSession extends UiObject {
         this.startButton.onClick = (function () {
             this.startNextRound()
         }).bind(this)
+
+        this.initialize(TrackNames.TRACK1, difficulties.EASY, gameModes.NORMAL)
     }
 
     initialize(trackName: TrackNames, difficulty: difficulties, gameMode: gameModes) {
@@ -61,6 +67,7 @@ export class GameSession extends UiObject {
         this.difficulty = difficulty
         this.gameMode = gameMode
         this.enemies = []
+        this.towers = []
         this.track = tracks.getTrack(this.trackName)
 
         switch(difficulty) {
@@ -89,8 +96,20 @@ export class GameSession extends UiObject {
         this.currentRound = this.roundQueue.getRound(1)
         this.currentState = sessionState.WAITING
         this.startButton.disabled = false
+
+        this.addTower(new Tower(100, 100))
+        this.addTower(new Tower(150, 100))
     }
     
+    addTower(tower: Tower) {
+        this.towers.push(tower)
+    }
+
+    setSelectedTower(tower: Tower) {
+        if (this.selectedTower) this.selectedTower.isSelected = false
+        this.selectedTower = tower
+        if (this.selectedTower) this.selectedTower.isSelected = true
+    }
 
     addEnemy(enemy: Enemy) {
         this.enemies.push(enemy)
@@ -116,13 +135,23 @@ export class GameSession extends UiObject {
         // this.HUD.track.draw()
     }
 
+    drawEnemies() {
+        this.enemies.forEach(e => e.draw())
+    }
+
+    drawTowers() {
+        this.towers.forEach(t => t.draw())
+        if (this.selectedTower) this.selectedTower.drawRange()
+    }
+
     draw(): void {
         
         this.drawTrack()
         this.drawTrackStart()
         this.drawTrackEnd()
 
-        this.enemies.forEach(e => e.draw())
+        this.drawEnemies()
+        this.drawTowers()
 
         this.drawHUD()
 
@@ -158,6 +187,35 @@ export class GameSession extends UiObject {
         }
     }
 
+    updateEnemies() {
+        this.enemies = this.enemies.filter(e => {
+            e.update(this.track)
+            if (e.distance >= this.track.length) { // Enemy escaped!
+                this.loseLives(e.health)
+                return false
+            } else {
+                return true
+            }
+        })
+    }
+
+    updateHUD() {
+        this.HUD.roundNumber.text = "R " + this.roundNumber + "/" + this.roundQueue.length
+        this.HUD.cash.text = "$ " + this.cash
+        this.HUD.lives.text = "♥ " + this.lives
+    }
+
+    updateTrack() {
+        this.startFlash -= this.startFlash > 0 ? 1 : 0
+        this.endFlash -= this.endFlash > 0 ? 1 : 0
+        this.track.startColor = this.startFlash > 0 ? colors.ULTRABRIGHT : colors.SOLID
+        this.track.endColor = this.endFlash > 0 ? colors.ULTRABRIGHT : colors.SOLID
+    }
+
+    updateTowers() {
+        this.towers.forEach(t => t.update())
+    }
+
     update(): void {
         // this.HUD.track.text = "" + this.trackName
 
@@ -172,24 +230,20 @@ export class GameSession extends UiObject {
             }
         }
 
-        this.enemies = this.enemies.filter(e => {
-            e.update(this.track)
-            if (e.distance >= this.track.length) { // Enemy escaped!
-                this.loseLives(e.health)
-                return false
-            } else {
-                return true
-            }
-        })
+        this.updateEnemies()
+        this.updateTrack()
 
-        this.HUD.roundNumber.text = "R " + this.roundNumber + "/" + this.roundQueue.length
-        this.HUD.cash.text = "$ " + this.cash
-        this.HUD.lives.text = "♥ " + this.lives
+        if (cursor.click && this.selectedTower) {
+            this.setSelectedTower(null)
+            audioPlayer.playAudio(audios.CLOSE)
+        }
 
-        this.startFlash -= this.startFlash > 0 ? 1 : 0
-        this.endFlash -= this.endFlash > 0 ? 1 : 0
-        this.track.startColor = this.startFlash > 0 ? colors.ULTRABRIGHT : colors.SOLID
-        this.track.endColor = this.endFlash > 0 ? colors.ULTRABRIGHT : colors.SOLID
+        this.updateTowers()
+        this.updateHUD()
+    }
+
+    onLoad(): void {
+        this.startButton.calcSize()
     }
 }
 

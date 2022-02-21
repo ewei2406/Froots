@@ -12,11 +12,12 @@ const settings = {
 
 class Session {
     settings = settings
-    currentScreen = screenNames.TITLE
+    currentScreen = screenNames.INGAME
     screens: Screens
 
     setScreens(screens: Screens) {
         this.screens = screens
+        this.screens.getScreen(this.currentScreen).onLoad()
     }
 
     getCurrentScreenName() {

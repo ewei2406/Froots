@@ -10,10 +10,11 @@ const settings = {
 class Session {
     constructor() {
         this.settings = settings;
-        this.currentScreen = "TITLE" /* TITLE */;
+        this.currentScreen = "INGAME" /* INGAME */;
     }
     setScreens(screens) {
         this.screens = screens;
+        this.screens.getScreen(this.currentScreen).onLoad();
     }
     getCurrentScreenName() {
         return this.currentScreen;

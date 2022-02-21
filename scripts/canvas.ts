@@ -52,6 +52,21 @@ export class Canvas {
         this.ctx.strokeRect(Math.round(x) - 0.5, Math.round(y) - 0.5, Math.round(w) + 1, Math.round(h) + 1)
     }
 
+    public fillCircle(x: number, y: number, r: number, color: Color) {
+        this.ctx.fillStyle = color.toString()
+        this.ctx.beginPath()
+        this.ctx.arc(x, y, r, 0, Math.PI * 2)
+        this.ctx.fill()
+    }
+
+    public strokeCircle(x: number, y: number, r: number, color: Color, lineWidth = 5) {
+        this.ctx.strokeStyle = color.toString()
+        this.ctx.lineWidth = lineWidth
+        this.ctx.beginPath()
+        this.ctx.arc(x, y, r, 0, Math.PI * 2)
+        this.ctx.stroke()
+    }
+
     public line(x1: number, y1: number, x2: number, y2: number, width: number, color=colors.SOLID, lineJoin="round") {
         this.ctx.strokeStyle = color.toString()
         this.ctx.lineWidth = width
@@ -80,9 +95,10 @@ export class Canvas {
         this.ctx.stroke()
     }
 
-    public arrowDeg(x: number, y: number, theta: number, magnitude: number, headsize: number, lineWidth: number, color: Color): void {
+    public arrowDeg(x: number, y: number, theta: number, magnitude: number, headsize: number, lineWidth: number, color: Color, cap="butt"): void {
         this.ctx.lineWidth = lineWidth
         this.ctx.lineJoin = "miter"
+        this.ctx.lineCap = cap as CanvasLineCap
         this.ctx.strokeStyle = color.toString()
         this.ctx.beginPath()
         const dTheta = Math.atan(headsize / (2 * (magnitude - headsize)))

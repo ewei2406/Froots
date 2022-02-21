@@ -5,6 +5,9 @@ import { cursor } from "./ui/Cursor.js";
 import { session, Settings } from "./Session.js"
 import { colors } from "./Color.js";
 import { audioPlayer } from "./Audio.js";
+import { gameSession } from "./game/gameSession.js";
+import { difficulties, gameModes } from "./game/gameModes.js";
+import { TrackNames } from "./game/tracks.js";
 
 
 class App {
@@ -20,6 +23,7 @@ class App {
         // self.tick()
         this.timer = setInterval(() => self.tick(), 1000 / 30)
 
+        
     }
 
     tick() {
@@ -51,6 +55,7 @@ class App {
 const wait = setInterval(() => {
     if (fontloader.isReady() && audioPlayer.isReady()) { 
         clearInterval(wait)
+
         console.log("Loaded!");
 
         const screens = makeScreens()

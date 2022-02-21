@@ -171,9 +171,6 @@ class InGame extends Screen {
         super();
         this.addUiObject(gameSession);
     }
-    onLoad() {
-        console.log("INGAME");
-    }
     update() {
         gameSession.update();
     }
@@ -190,9 +187,6 @@ class Lose extends Screen {
         this.addUiObject(new Button("RETRY", 20, 260, 10, () => {
             session.setCurrentScreen("LVLS2" /* DIFMODESELECT */);
         }));
-    }
-    onLoad() {
-        console.log("LOSE!");
     }
     draw() {
         this.canvas.clear();
@@ -213,9 +207,6 @@ class Win extends Screen {
         this.addUiObject(new Button("RETRY", 20, 260, 10, () => {
             session.setCurrentScreen("LVLS2" /* DIFMODESELECT */);
         }));
-    }
-    onLoad() {
-        console.log("LOSE!");
     }
     draw() {
         this.canvas.clear();

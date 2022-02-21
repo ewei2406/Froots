@@ -31,6 +31,19 @@ export class Canvas {
         this.ctx.lineWidth = lineWidth;
         this.ctx.strokeRect(Math.round(x) - 0.5, Math.round(y) - 0.5, Math.round(w) + 1, Math.round(h) + 1);
     }
+    fillCircle(x, y, r, color) {
+        this.ctx.fillStyle = color.toString();
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, r, 0, Math.PI * 2);
+        this.ctx.fill();
+    }
+    strokeCircle(x, y, r, color, lineWidth = 5) {
+        this.ctx.strokeStyle = color.toString();
+        this.ctx.lineWidth = lineWidth;
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, r, 0, Math.PI * 2);
+        this.ctx.stroke();
+    }
     line(x1, y1, x2, y2, width, color = colors.SOLID, lineJoin = "round") {
         this.ctx.strokeStyle = color.toString();
         this.ctx.lineWidth = width;
@@ -55,9 +68,10 @@ export class Canvas {
     finishLine() {
         this.ctx.stroke();
     }
-    arrowDeg(x, y, theta, magnitude, headsize, lineWidth, color) {
+    arrowDeg(x, y, theta, magnitude, headsize, lineWidth, color, cap = "butt") {
         this.ctx.lineWidth = lineWidth;
         this.ctx.lineJoin = "miter";
+        this.ctx.lineCap = cap;
         this.ctx.strokeStyle = color.toString();
         this.ctx.beginPath();
         const dTheta = Math.atan(headsize / (2 * (magnitude - headsize)));
