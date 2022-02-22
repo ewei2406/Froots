@@ -11,7 +11,7 @@
 canvas {
     border: 1px solid black;
     image-rendering: pixelated;
-    width: 1200px;
+    width: 800px;
 }
 
 body {
