@@ -2,10 +2,10 @@ import { audioPlayer, audios } from "../Audio.js"
 import { canvas } from "../Canvas.js"
 import { colors } from "../Color.js"
 import { cursor } from "../ui/Cursor.js"
-import { Enemy } from "./enemy.js"
-import { gameSession } from "./gameSession.js"
-import { ExplosionEffect, LaserBeam } from "./particle.js"
-import { Bomb, Projectile } from "./projectile.js"
+import { Enemy } from "./Enemy.js"
+import { gameSession } from "./GameSession.js"
+import { ExplosionEffect, LaserBeam } from "./Particle.js"
+import { Bomb, Projectile } from "./Projectile.js"
 
 enum towerState {
     IDLE

@@ -1,8 +1,8 @@
 import { canvas } from "../Canvas.js"
 import { colors, RgbColor } from "../Color.js"
-import { gameSession } from "./gameSession.js"
-import { Projectile } from "./projectile.js"
-import { Track } from "./tracks.js"
+import { gameSession } from "./GameSession.js"
+import { Projectile } from "./Projectile.js"
+import { Track } from "./Tracks.js"
 
 export enum enemyTypes {
     REGULAR, BOSS

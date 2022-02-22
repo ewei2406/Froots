@@ -1,4 +1,4 @@
-import { gameObject } from "../gameObjects.js"
+import { gameObject } from "../GameObjects.js"
 import { canvas } from "../Canvas.js"
 import { Color, colors } from "../Color.js"
 

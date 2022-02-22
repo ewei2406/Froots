@@ -1,6 +1,6 @@
-import { difficulties, gameModes } from "./gameModes.js";
-import { gameSession } from "./gameSession.js";
-import { Track, TrackNames, tracks } from "./tracks.js";
+import { difficulties, gameModes } from "./GameModes.js";
+import { gameSession } from "./GameSession.js";
+import { Track, TrackNames, tracks } from "./Tracks.js";
 
 class GameConstructor {
     trackName = TrackNames.TRACK1

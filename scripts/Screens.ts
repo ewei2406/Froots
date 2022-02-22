@@ -6,10 +6,10 @@ import { cursor } from "./ui/Cursor.js";
 import { Heading, TextObject } from "./ui/Text.js";
 import { session, Settings } from "./Session.js";
 import { TrackSelector } from "./ui/TrackButton.js";
-import { TrackUiObject } from "./game/tracks.js";
-import { gameConstructor } from "./game/gameConstructor.js";
-import { difficulties, gameModes } from "./game/gameModes.js";
-import { GameSession, gameSession } from "./game/gameSession.js";
+import { TrackUiObject } from "./game/Tracks.js";
+import { gameConstructor } from "./game/GameConstructor.js";
+import { difficulties, gameModes } from "./game/GameModes.js";
+import { GameSession, gameSession } from "./game/GameSession.js";
 import { UiObject } from "./ui/UiObject.js";
 
 

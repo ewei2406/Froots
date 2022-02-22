@@ -1,8 +1,8 @@
 import { canvas } from "../Canvas.js";
 import { colors } from "../Color.js";
 import { Fonts } from "../Font.js";
-import { gameConstructor } from "../game/gameConstructor.js";
-import { tracks, TrackNames, TrackUiObject } from "../game/tracks.js";
+import { gameConstructor } from "../game/GameConstructor.js";
+import { tracks, TrackNames, TrackUiObject } from "../game/Tracks.js";
 import { screenNames } from "../Screens.js";
 import { session } from "../Session.js";
 import { Button } from "./Button.js";

@@ -1,9 +1,9 @@
 import { audioPlayer, audios } from "../Audio.js"
 import { canvas } from "../Canvas.js"
 import { colors } from "../Color.js"
-import { Enemy } from "./enemy.js"
-import { gameSession } from "./gameSession.js"
-import { ExplosionEffect } from "./particle.js"
+import { Enemy } from "./Enemy.js"
+import { gameSession } from "./GameSession.js"
+import { ExplosionEffect } from "./Particle.js"
 
 export class Projectile {
     x: number

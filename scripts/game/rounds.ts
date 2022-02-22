@@ -1,6 +1,6 @@
-import { Enemy, enemyTypes } from "./enemy.js"
-import { gameModes } from "./gameModes.js"
-import { gameSession } from "./gameSession.js"
+import { Enemy, enemyTypes } from "./Enemy.js"
+import { gameModes } from "./GameModes.js"
+import { gameSession } from "./GameSession.js"
 
 class GameModeRounds {
     gameModeRounds = {}

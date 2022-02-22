@@ -8,13 +8,13 @@ import { Button } from "../ui/Button.js";
 import { cursor } from "../ui/Cursor.js";
 import { TextObject } from "../ui/Text.js";
 import { UiObject } from "../ui/UiObject.js";
-import { Enemy } from "./enemy.js";
-import { difficulties, gameModes } from "./gameModes.js";
-import { ExplosionEffect, LaserBeam, Particle } from "./particle.js";
-import { Bomb, Projectile } from "./projectile.js";
-import { gameModeRounds, Round, Rounds } from "./rounds.js";
-import { Tower, towerGenerator, towerNames } from "./tower.js";
-import { Track, TrackNames, tracks } from "./tracks.js";
+import { Enemy } from "./Enemy.js";
+import { difficulties, gameModes } from "./GameModes.js";
+import { ExplosionEffect, LaserBeam, Particle } from "./Particle.js";
+import { Bomb, Projectile } from "./Projectile.js";
+import { gameModeRounds, Round, Rounds } from "./Rounds.js";
+import { Tower, towerGenerator, towerNames } from "./Tower.js";
+import { Track, TrackNames, tracks } from "./Tracks.js";
 
 
 enum sessionState {

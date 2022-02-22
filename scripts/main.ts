@@ -5,9 +5,9 @@ import { cursor } from "./ui/Cursor.js";
 import { session, Settings } from "./Session.js"
 import { colors } from "./Color.js";
 import { audioPlayer } from "./Audio.js";
-import { gameSession } from "./game/gameSession.js";
-import { difficulties, gameModes } from "./game/gameModes.js";
-import { TrackNames } from "./game/tracks.js";
+import { gameSession } from "./game/GameSession.js";
+import { difficulties, gameModes } from "./game/GameModes.js";
+import { TrackNames } from "./game/Tracks.js";
 
 
 class App {
