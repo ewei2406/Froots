@@ -47,5 +47,5 @@ class AudioPlayer {
         }
     }
 }
-const audioPlayer = new AudioPlayer(audios.EXPLOSION, audios.SELECT, audios.SHOOTLASER, audios.DESTROY, audios.OPEN, audios.CLOSE);
+const audioPlayer = new AudioPlayer(audios.EXPLOSION, audios.SELECT, audios.SHOOTLASER, audios.DESTROY, audios.OPEN, audios.CLOSE, audios.HIT, audios.SHOOT);
 export { audioPlayer };

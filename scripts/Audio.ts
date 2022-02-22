@@ -60,7 +60,9 @@ const audioPlayer = new AudioPlayer(
     audios.SHOOTLASER,
     audios.DESTROY,
     audios.OPEN,
-    audios.CLOSE
+    audios.CLOSE,
+    audios.HIT,
+    audios.SHOOT
     )
 
 export { audioPlayer }
