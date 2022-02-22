@@ -18,14 +18,14 @@ export class TextObject extends UiObject {
     calcSize() {
         canvas.ctx.font = this.getFontString();
         const c = canvas.ctx.measureText("" + this.text);
-        this.w = c.actualBoundingBoxRight + this.padding * 2 - c.actualBoundingBoxLeft;
+        this.w = c.actualBoundingBoxRight + (this.padding * 2) - c.actualBoundingBoxLeft;
         this.h = c.actualBoundingBoxAscent + c.actualBoundingBoxDescent + this.padding * 2;
         this.fontOffset = c.actualBoundingBoxAscent;
     }
     draw(color = this.color) {
         canvas.ctx.font = this.getFontString();
         canvas.ctx.fillStyle = color.toString();
-        canvas.ctx.fillText("" + this.text, this.x + this.padding, this.y + this.fontOffset + this.padding);
+        canvas.ctx.fillText("" + this.text, this.x + (this.padding / 2), this.y + this.fontOffset + this.padding);
     }
 }
 export class Heading extends TextObject {

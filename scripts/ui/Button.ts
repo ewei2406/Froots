@@ -13,11 +13,13 @@ export class Button extends TextObject {
     borderHoverColor = colors.ULTRABRIGHT
     baseColor = colors.SOLID
     disabled: boolean
+    towerPrice = 0
 
     constructor(text: string, x: number, y: number, size: number, onClick: () => void, disabled=false) {
         super(text, x, y, size, Fonts.BODY, colors.SOLID, size * 0.5)
         this.disabled = disabled
         this.onClick = onClick
+        this.borderWidth = 2
     }
 
     update(): void {
@@ -57,11 +59,10 @@ export class Button extends TextObject {
         canvas.ctx.fillText(
             "" + this.text,
             this.x + this.padding,
-            this.y + this.fontOffset + this.padding + 0.5,
-            this.w)
+            this.y + this.fontOffset + this.padding + 0)
 
-        canvas.strokeRect(this.x, this.y, this.w, this.h, 
+        if (this.borderWidth > 0) {canvas.strokeRect(this.x, this.y, this.w, this.h, 
             this.isHover ? this.borderHoverColor.toString() : this.color.toString(), 
-            2.5)
+            this.borderWidth)}
     }
 }

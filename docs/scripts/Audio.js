@@ -6,6 +6,8 @@ export var audios;
     audios["DESTROY"] = "destroy.wav";
     audios["OPEN"] = "open.wav";
     audios["CLOSE"] = "close.wav";
+    audios["SHOOT"] = "shoot.wav";
+    audios["HIT"] = "hit.wav";
 })(audios || (audios = {}));
 class AudioPlayer {
     constructor(...audioNames) {
@@ -15,6 +17,7 @@ class AudioPlayer {
         audioNames.forEach(audio => {
             this.loadingAudio[audio] = false;
             const a = new Audio(`assets/audio/${audio}`);
+            a.preload = "auto";
             this.sounds[audio] = a;
             a.oncanplaythrough = () => {
                 this.loadingAudio[audio] = true;

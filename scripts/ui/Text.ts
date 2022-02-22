@@ -31,7 +31,7 @@ export class TextObject extends UiObject {
         
         const c = canvas.ctx.measureText("" + this.text)
         
-        this.w = c.actualBoundingBoxRight + this.padding * 2 - c.actualBoundingBoxLeft
+        this.w = c.actualBoundingBoxRight + (this.padding * 2) - c.actualBoundingBoxLeft
         this.h = c.actualBoundingBoxAscent + c.actualBoundingBoxDescent + this.padding * 2
         this.fontOffset = c.actualBoundingBoxAscent
     }
@@ -42,7 +42,7 @@ export class TextObject extends UiObject {
         canvas.ctx.fillStyle = color.toString()
         canvas.ctx.fillText(
             "" + this.text, 
-            this.x + this.padding, 
+            this.x + (this.padding / 2), 
             this.y + this.fontOffset + this.padding)
     }
 }

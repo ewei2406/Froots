@@ -97,6 +97,9 @@ export class Track {
         }
         return res;
     }
+    isValidPosition(x, y) {
+        return true;
+    }
 }
 export class Tracks {
     constructor() {

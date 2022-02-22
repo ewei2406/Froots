@@ -4,7 +4,9 @@ export enum audios {
     SHOOTLASER="shootLaser.wav",
     DESTROY="destroy.wav",
     OPEN="open.wav",
-    CLOSE="close.wav"
+    CLOSE="close.wav",
+    SHOOT="shoot.wav",
+    HIT="hit.wav"
 }
 
 class AudioPlayer {
@@ -19,6 +21,7 @@ class AudioPlayer {
             this.loadingAudio[audio] = false
             
             const a = new Audio(`assets/audio/${audio}`)
+            a.preload = "auto"
             this.sounds[audio] = a
             a.oncanplaythrough = () => {
                 this.loadingAudio[audio] = true

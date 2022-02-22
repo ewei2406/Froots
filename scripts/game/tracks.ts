@@ -140,6 +140,10 @@ export class Track {
 
         return res
     }
+
+    isValidPosition(x: number, y: number) {
+        return true
+    }
 }
 
 export class Tracks {

@@ -231,6 +231,33 @@ class InGame extends Screen {
     }
 }
 
+class Paused extends Screen {
+
+    constructor() {
+        super()
+
+        this.addUiObject(new UiObject(0, 0, this.canvas.width, this.canvas.height, colors.DARKEN))
+
+        this.addUiObject(new Heading("Paused", 20, 20, 40))
+
+        this.addUiObject(new Button("EXIT TO TITLE", 20, 235, 10, () => {
+            session.setCurrentScreen(screenNames.TITLE)
+        }))
+
+        this.addUiObject(new Button("RESUME", 20, 260, 10, () => {
+            session.setCurrentScreen(screenNames.INGAME)
+        }))
+    }
+
+    draw(): void {
+        this.canvas.clear()
+        this.canvas.screenFill(colors.EMPTY) // Set the background color
+
+        gameSession.draw()
+        this.UiObjects.forEach(e => e.draw())
+    }
+}
+
 class Lose extends Screen {
 
     constructor() {
@@ -294,6 +321,7 @@ export const enum screenNames {
     LEVELSELECT = "LVLS",
     DIFMODESELECT = "LVLS2",
     INGAME = "INGAME",
+    PAUSED = "PAUSED",
     LOSE = "LOSE",
     WIN = "WIN"
 }
@@ -322,6 +350,7 @@ function makeScreens(): any {
     screens.addScreen(new InGame(), screenNames.INGAME)
     screens.addScreen(new Lose(), screenNames.LOSE)
     screens.addScreen(new Win(), screenNames.WIN)
+    screens.addScreen(new Paused(), screenNames.PAUSED)
 
     return (
         screens

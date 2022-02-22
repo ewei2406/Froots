@@ -18,17 +18,24 @@ export class UiObject implements gameObject {
     id: number
     color: Color
 
-    constructor(x: number, y: number, w: number, h: number, color=colors.SOLID) {
+    borderColor: Color
+    borderWidth: number
+
+    constructor(x: number, y: number, w: number, h: number, color=colors.SOLID, borderColor=null, borderWidth=null) {
         this.x = x
         this.y = y
         this.w = w
         this.h = h
         this.id = generateId()
         this.color = color
+
+        this.borderColor = borderColor
+        this.borderWidth = borderWidth
     }
 
     draw() {
         canvas.fillRect(this.x, this.y, this.w, this.h, this.color)
+        if (this.borderWidth) canvas.strokeRect(this.x, this.y, this.w, this.h, this.borderColor, this.borderWidth)
     }
 
     update(): void {

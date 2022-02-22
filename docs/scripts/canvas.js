@@ -68,9 +68,9 @@ export class Canvas {
     finishLine() {
         this.ctx.stroke();
     }
-    arrowDeg(x, y, theta, magnitude, headsize, lineWidth, color, cap = "butt") {
+    arrowDeg(x, y, theta, magnitude, headsize, lineWidth, color, cap = "butt", lineJoin = "miter") {
         this.ctx.lineWidth = lineWidth;
-        this.ctx.lineJoin = "miter";
+        this.ctx.lineJoin = lineJoin;
         this.ctx.lineCap = cap;
         this.ctx.strokeStyle = color.toString();
         this.ctx.beginPath();

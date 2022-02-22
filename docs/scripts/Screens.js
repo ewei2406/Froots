@@ -175,6 +175,25 @@ class InGame extends Screen {
         gameSession.update();
     }
 }
+class Paused extends Screen {
+    constructor() {
+        super();
+        this.addUiObject(new UiObject(0, 0, this.canvas.width, this.canvas.height, colors.DARKEN));
+        this.addUiObject(new Heading("Paused", 20, 20, 40));
+        this.addUiObject(new Button("EXIT TO TITLE", 20, 235, 10, () => {
+            session.setCurrentScreen("TITLE" /* TITLE */);
+        }));
+        this.addUiObject(new Button("RESUME", 20, 260, 10, () => {
+            session.setCurrentScreen("INGAME" /* INGAME */);
+        }));
+    }
+    draw() {
+        this.canvas.clear();
+        this.canvas.screenFill(colors.EMPTY); // Set the background color
+        gameSession.draw();
+        this.UiObjects.forEach(e => e.draw());
+    }
+}
 class Lose extends Screen {
     constructor() {
         super();
@@ -236,6 +255,7 @@ function makeScreens() {
     screens.addScreen(new InGame(), "INGAME" /* INGAME */);
     screens.addScreen(new Lose(), "LOSE" /* LOSE */);
     screens.addScreen(new Win(), "WIN" /* WIN */);
+    screens.addScreen(new Paused(), "PAUSED" /* PAUSED */);
     return (screens);
 }
 export { makeScreens };
