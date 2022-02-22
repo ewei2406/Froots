@@ -3,11 +3,13 @@ export var Fonts;
     Fonts["TITLE"] = "richland";
     Fonts["BODY"] = "fff";
 })(Fonts || (Fonts = {}));
+// RANDOM ASS COMMENT!!! WORK PLEASE
 class Fontloader {
     constructor(...fonts) {
         this.loadingFonts = {};
         fonts.forEach(font => {
             this.loadingFonts[font] = false;
+            // wadwadwad
             const f = new FontFace(font, `url(assets/fonts/${font}.woff)`);
             f.load().then(() => {
                 this.loadingFonts[font] = true;

@@ -11,7 +11,7 @@ class Fontloader {
 
         fonts.forEach(font => {
             this.loadingFonts[font] = false
-            const f = new FontFace(font, `url(/assets/fonts/${font}.woff)`)
+            const f = new FontFace(font, `url(assets/fonts/${font}.woff)`)
             f.load().then(() => {
                 this.loadingFonts[font] = true
                 document.fonts.add(f)
