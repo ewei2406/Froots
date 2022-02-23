@@ -79,7 +79,7 @@ class TitleScreen extends Screen {
 
         this.addUiObject(new Heading("Froots", 20, 20, 40))
         this.addUiObject(new TextObject("TD", 145, 20, 20, Fonts.BODY, colors.SOLID))
-        this.addUiObject(new TextObject("V 0.0.1", 340, 270, 10, Fonts.BODY, colors.SOLID))
+        this.addUiObject(new TextObject("V 0.0.2", 340, 270, 10, Fonts.BODY, colors.SOLID))
 
         this.addUiObject(new Button("NEW GAME", 20, 185, 10, () => {
             session.setCurrentScreen(screenNames.LEVELSELECT)
