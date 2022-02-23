@@ -3,7 +3,7 @@ import { gameSession } from "./GameSession.js";
 import { Track, TrackNames, tracks } from "./Tracks.js";
 
 class GameConstructor {
-    trackName = TrackNames.TRACK1
+    trackName = TrackNames.TWO
     difficulty = difficulties.EASY
     gameMode = gameModes.NORMAL
 
@@ -38,7 +38,7 @@ class GameConstructor {
     }
 
     reset() {
-        this.trackName = TrackNames.TRACK1
+        this.trackName = TrackNames.TWO
         this.difficulty = difficulties.EASY
         this.gameMode = gameModes.NORMAL
     }

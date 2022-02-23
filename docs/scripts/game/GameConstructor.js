@@ -2,7 +2,7 @@ import { difficulties, gameModes } from "./GameModes.js";
 import { gameSession } from "./GameSession.js";
 class GameConstructor {
     constructor() {
-        this.trackName = "2" /* TRACK1 */;
+        this.trackName = "2" /* TWO */;
         this.difficulty = difficulties.EASY;
         this.gameMode = gameModes.NORMAL;
     }
@@ -31,7 +31,7 @@ class GameConstructor {
         return this.gameMode;
     }
     reset() {
-        this.trackName = "2" /* TRACK1 */;
+        this.trackName = "2" /* TWO */;
         this.difficulty = difficulties.EASY;
         this.gameMode = gameModes.NORMAL;
     }

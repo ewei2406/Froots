@@ -109,21 +109,25 @@ export class Canvas {
             (magnitude - headsize) * Math.cos(theta) + x,
             (magnitude - headsize) * Math.sin(theta) + y)
 
-        this.lineTo(
-            (magnitude - headsize) * Math.cos(theta + dTheta) + x,
-            (magnitude - headsize) * Math.sin(theta + dTheta) + y)
 
-        this.lineTo(
-            (magnitude) * Math.cos(theta) + x,
-            (magnitude) * Math.sin(theta) + y)
+        if (headsize > 0) {
 
-        this.lineTo(
-            (magnitude - headsize) * Math.cos(theta - dTheta) + x,
-            (magnitude - headsize) * Math.sin(theta - dTheta) + y)
+            this.lineTo(
+                (magnitude - headsize) * Math.cos(theta + dTheta) + x,
+                (magnitude - headsize) * Math.sin(theta + dTheta) + y)
 
-        this.lineTo(
-            (magnitude - headsize) * Math.cos(theta) + x,
-            (magnitude - headsize) * Math.sin(theta) + y)
+            this.lineTo(
+                (magnitude) * Math.cos(theta) + x,
+                (magnitude) * Math.sin(theta) + y)
+
+            this.lineTo(
+                (magnitude - headsize) * Math.cos(theta - dTheta) + x,
+                (magnitude - headsize) * Math.sin(theta - dTheta) + y)
+
+            this.lineTo(
+                (magnitude - headsize) * Math.cos(theta) + x,
+                (magnitude - headsize) * Math.sin(theta) + y)
+        }
 
         this.ctx.stroke()
     }

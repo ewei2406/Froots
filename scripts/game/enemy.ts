@@ -1,7 +1,9 @@
+import { audioPlayer, audios } from "../Audio.js"
 import { canvas } from "../Canvas.js"
 import { colors, RgbColor } from "../Color.js"
 import { gameSession } from "./GameSession.js"
-import { Projectile } from "./Projectile.js"
+import { ExplosionEffect } from "./Particle.js"
+import { Explosion, Projectile } from "./Projectile.js"
 import { Track } from "./Tracks.js"
 
 export enum enemyTypes {
@@ -97,6 +99,18 @@ export class Enemy {
 
     isAlive() {
         return this.health > 0
+    }
+
+    deathEffect() {
+        switch (this.type) {
+            case enemyTypes.BOSS:
+                audioPlayer.playAudio(audios.EXPLOSION)
+                gameSession.addParticle(new ExplosionEffect(this.x, this.y, 15, 20))
+                break
+            default:
+                null
+                break
+        }
     }
 
     draw() {

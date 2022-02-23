@@ -1,15 +1,7 @@
-@font-face {
-    font-family: 'FiraBold';
-    src: url('assets/fonts/FiraCode-Bold.woff') format('woff');
-}
-
-@font-face {
-    font-family: 'FiraRegular';
-    src: url('assets/fonts/FiraCode-Regular.woff') format('woff');
-}
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
 canvas {
-    border: 1px solid black;
+    border: 1px solid #777;
     image-rendering: pixelated;
     width: 800px;
 }
@@ -17,5 +9,17 @@ canvas {
 body {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
+    font-family: 'Fira Code', monospace;
+    color: #777
+}
+
+#patchnotes {
+    width: 100%;
+}
+
+#patchnotes > div {
+    border-top: 1px solid black;
+    padding: 10px;
 }

@@ -10,7 +10,7 @@ const settings = {
 class Session {
     constructor() {
         this.settings = settings;
-        this.currentScreen = "TITLE" /* TITLE */;
+        this.currentScreen = "LVLS" /* LEVELSELECT */;
     }
     setScreens(screens) {
         this.screens = screens;

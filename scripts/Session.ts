@@ -12,7 +12,7 @@ const settings = {
 
 class Session {
     settings = settings
-    currentScreen = screenNames.TITLE
+    currentScreen = screenNames.LEVELSELECT
     screens: Screens
 
     setScreens(screens: Screens) {

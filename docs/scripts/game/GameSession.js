@@ -7,7 +7,8 @@ import { Button } from "../ui/Button.js";
 import { cursor } from "../ui/Cursor.js";
 import { TextObject } from "../ui/Text.js";
 import { UiObject } from "../ui/UiObject.js";
-import { difficulties } from "./GameModes.js";
+import { enemyTypes } from "./Enemy.js";
+import { difficulties, gameModes } from "./GameModes.js";
 import { gameModeRounds } from "./Rounds.js";
 import { towerGenerator } from "./Tower.js";
 import { tracks } from "./Tracks.js";
@@ -39,6 +40,8 @@ export class GameSession extends UiObject {
         this.startButton = new Button("NEXT ROUND", 310, 277, 10, () => null);
         this.shopButton = new Button("SHOP", 5, 277, 10, () => null);
         this.pauseButton = new Button("❚❚", 5, 5, 10, () => null);
+        this.speedButton = new Button("▸▸", 280, 277, 11, () => null);
+        this.enabledFastForward = false;
         this.startButton.onClick = (function () {
             this.startNextRound();
         }).bind(this);
@@ -73,7 +76,10 @@ export class GameSession extends UiObject {
         this.cancelButton.onClick = (function () {
             this.showShop = shopState.SHOP;
         }).bind(this);
-        // this.initialize(TrackNames.TRACK3, difficulties.DEATH, gameModes.NORMAL)
+        this.speedButton.onClick = (function () {
+            this.enabledFastForward = !this.enabledFastForward;
+        }).bind(this);
+        this.initialize("2" /* TWO */, difficulties.EASY, gameModes.NORMAL);
     }
     createTowerButton() {
         //
@@ -93,11 +99,11 @@ export class GameSession extends UiObject {
         this.track = tracks.getTrack(this.trackName);
         switch (difficulty) {
             case difficulties.MEDIUM:
-                this.cash = 800;
+                this.cash = 600;
                 this.lives = 100;
                 break;
             case difficulties.HARD:
-                this.cash = 600;
+                this.cash = 400;
                 this.lives = 40;
                 break;
             case difficulties.DEATH:
@@ -105,13 +111,13 @@ export class GameSession extends UiObject {
                 this.lives = 1;
                 break;
             default: // Easy
-                this.cash = 1000;
+                this.cash = 800;
                 this.lives = 200;
                 break;
         }
+        this.roundQueue = gameModeRounds.getGameModeRounds(gameModes.NORMAL);
         this.startButton.calcSize();
         this.roundNumber = 0;
-        this.roundQueue = gameModeRounds.getGameModeRounds(this.gameMode);
         this.currentRound = this.roundQueue.getRound(1);
         this.currentState = sessionState.WAITING;
         this.startButton.disabled = false;
@@ -198,6 +204,7 @@ export class GameSession extends UiObject {
         this.drawHUD();
         this.startButton.draw();
         this.pauseButton.draw();
+        this.speedButton.draw();
         switch (this.showShop) {
             case shopState.NONE:
                 this.shopButton.draw();
@@ -232,9 +239,17 @@ export class GameSession extends UiObject {
         this.currentState = sessionState.WAITING;
         this.startButton.disabled = false;
         this.roundNumber++;
-        this.cash += 150 - (this.difficulty * 25);
+        this.cash += 250 - (this.difficulty * 50);
         if (this.roundNumber == this.roundQueue.length) {
             session.currentScreen = "WIN" /* WIN */;
+        }
+        switch (this.gameMode) {
+            case gameModes.NOPAUSE:
+                this.startNextRound();
+                break;
+            case gameModes.RECESSION:
+                this.cash = Math.round(0.9 * this.cash);
+                break;
         }
     }
     updateEnemies() {
@@ -250,6 +265,9 @@ export class GameSession extends UiObject {
                 }
                 else {
                     this.cash += e.deathMoney;
+                    if (e.type == enemyTypes.BOSS) {
+                        e.deathEffect();
+                    }
                     return false;
                 }
             }
@@ -322,7 +340,11 @@ export class GameSession extends UiObject {
         }
         this.startButton.update();
         this.pauseButton.update();
+        this.speedButton.update();
+        this.speedButton.baseColor = this.enabledFastForward ? colors.ULTRABRIGHT : colors.SOLID;
         if (this.currentState == sessionState.ROUND) {
+            if (this.enabledFastForward)
+                this.currentRound.update();
             this.currentRound.update();
             if (this.currentRound.numRemaining == 0 && this.enemies.length == 0) {
                 this.endCurrentRound();
@@ -332,18 +354,29 @@ export class GameSession extends UiObject {
             this.setSelectedTower(null);
             audioPlayer.playAudio(audios.CLOSE);
         }
+        if (this.enabledFastForward) {
+            this.updateEnemies();
+            this.updateProjectiles();
+            this.updateTrack();
+            this.updateTowers();
+            this.updateParticles();
+        }
         this.updateEnemies();
         this.updateProjectiles();
         this.updateTrack();
         this.updateTowers();
         this.updateParticles();
         this.updateHUD();
+        // if (cursor.click) {
+        //     this.addProjectile(new Missile(cursor.x, cursor.y, 0, 5, 1, 1, 300, 1, 1, null, targeting.FIRST))
+        // }
     }
     onLoad() {
         this.startButton.calcSize();
         this.shopButton.calcSize();
         this.pauseButton.calcSize();
         this.cancelButton.calcSize();
+        this.speedButton.calcSize();
     }
 }
 const gameSession = new GameSession();

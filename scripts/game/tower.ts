@@ -5,14 +5,80 @@ import { cursor } from "../ui/Cursor.js"
 import { Enemy } from "./Enemy.js"
 import { gameSession } from "./GameSession.js"
 import { ExplosionEffect, LaserBeam } from "./Particle.js"
-import { Bomb, Projectile } from "./Projectile.js"
+import { Bomb, Missile, Projectile } from "./Projectile.js"
 
 enum towerState {
     IDLE
 }
 
-enum targeting {
+export enum targeting {
     FIRST, LAST, CLOSE, STRONG
+}
+
+const distanceToSq = (start: { x: number, y: number }, e: Enemy) => {
+    const dx = e.x - start.x
+    const dy = e.y - start.y
+
+    return dx ** 2 + dy ** 2
+}
+
+export const getTarget = (start: {x: number, y: number}, validEnemies: Array<Enemy>, targetingMode: targeting) => {
+    let bestTarget = validEnemies[0]
+
+    switch (targetingMode) {
+        case targeting.FIRST:
+            validEnemies.forEach(e => {
+                if (e.distance > bestTarget.distance) {
+                    bestTarget = e
+                }
+            })
+            break
+        case targeting.LAST:
+            validEnemies.forEach(e => {
+                if (e.distance < bestTarget.distance) {
+                    bestTarget = e
+                }
+            })
+            break
+        case targeting.STRONG:
+            validEnemies.forEach(e => {
+                if (e.health < bestTarget.health) {
+                    bestTarget = e
+                }
+            })
+            break
+        case targeting.CLOSE:
+            validEnemies.forEach(e => {
+                if (distanceToSq(start, e) < distanceToSq(start, bestTarget)) {
+                    bestTarget = e
+                }
+            })
+            break
+        default:
+            null
+    }
+
+    return bestTarget
+}
+
+export const getAngle = (start: {x: number, y:number}, finish: {x: number, y: number}) => {
+    let theta = 0
+    if (finish.x > start.x) {
+        theta = Math.atan(
+            (start.y - finish.y) / (start.x - finish.x)
+        )
+    } else if (finish.x < start.x) {
+        theta = Math.PI + Math.atan(
+            (start.y - finish.y) / (start.x - finish.x)
+        )
+    } else {
+        if (finish.y > start.y) {
+            theta = Math.PI / 2
+        } else {
+            theta = 3 * Math.PI / 2
+        }
+    }
+    return theta
 }
 
 export class Tower {
@@ -81,61 +147,14 @@ export class Tower {
             return
         }
 
-        let bestTarget = validEnemies[0]
-
-        switch (this.targeting) {
-            case targeting.FIRST:
-                validEnemies.forEach(e => {
-                    if (e.distance > bestTarget.distance) {
-                        bestTarget = e
-                    }
-                })
-                break
-            case targeting.LAST:
-                validEnemies.forEach(e => {
-                    if (e.distance < bestTarget.distance) {
-                        bestTarget = e
-                    }
-                })
-                break
-            case targeting.STRONG:
-                validEnemies.forEach(e => {
-                    if (e.health < bestTarget.health) {
-                        bestTarget = e
-                    }
-                })
-                break
-            case targeting.CLOSE:
-                validEnemies.forEach(e => {
-                    if (this.distanceToSq(e) < this.distanceToSq(bestTarget)) {
-                        bestTarget = e
-                    }
-                })
-                break
-            default:
-                null
-        }
+        const bestTarget = getTarget(this, validEnemies, this.targeting)
 
         this.lookAt(bestTarget)
         this.lookingAt = bestTarget
     }
 
     lookAt(e: Enemy) {
-        if (e.x > this.x) {
-            this.theta = Math.atan(
-                (this.y - e.y) / (this.x - e.x)
-            )
-        } else if (e.x < this.x) {
-            this.theta = Math.PI + Math.atan(
-                (this.y - e.y) / (this.x - e.x)
-            )
-        } else {
-            if (e.y > this.y) {
-                this.theta = Math.PI / 2
-            } else {
-                this.theta = 3 * Math.PI / 2
-            }
-        }
+        this.theta = getAngle(this, e)
     }
 
     fire() {
@@ -183,7 +202,7 @@ class ShootTower extends Tower {
         super(x, y)
         this.projectileSpeed = 9
         this.projectilePierce = 2
-        this.projectileDamage = 2
+        this.projectileDamage = 1
         this.projectileLifespan = 30
         this.projectileSize = 8
         this.range = 80
@@ -197,10 +216,29 @@ class ShootTower extends Tower {
     }
 }
 
+class Monkey extends Tower {
+    constructor(x = 0, y = 0) {
+        super(x, y)
+        this.projectileSpeed = 9
+        this.projectilePierce = 1
+        this.projectileDamage = 1
+        this.projectileLifespan = 20
+        this.projectileSize = 8
+        this.range = 60
+        this.fireRate = 2
+    }
+
+    draw() {
+        canvas.arrowDeg(this.x, this.y, this.theta, 6, 3, 3, this.color, "square")
+        canvas.arrowDeg(this.x, this.y, this.theta + Math.PI, 6, 3, 3, this.color, "square")
+        canvas.strokeCircle(this.x, this.y, this.size / 2, this.color, 1)
+    }
+}
+
 class LaserTower extends Tower {
     constructor(x=0, y=0) {
         super(x, y)
-        this.fireRate = 18
+        this.fireRate = 15
         this.range = 60
         this.projectileDamage = 3
     }
@@ -221,18 +259,33 @@ class LaserTower extends Tower {
     }
 }
 
+class LaserSniper extends LaserTower {
+    constructor(x=0, y=0) {
+        super(x, y)
+        this.fireRate = 45
+        this.range = 300
+        this.projectileDamage = 8
+    }
+
+    draw() {
+        canvas.arrowDeg(this.x, this.y, this.theta, 12, 0, 3, this.color, "square")
+        canvas.arrowDeg(this.x, this.y, this.theta + Math.PI, 12, 0, 3, this.color)
+        canvas.strokeCircle(this.x, this.y, this.size / 2, this.color, 1)
+    }
+}
+
 class BombTower extends Tower {
     explosionSize: number
 
     constructor(x=0, y=0) {
         super(x, y)
-        this.fireRate = 50
+        this.fireRate = 60
         this.projectileSpeed = 2
-        this.projectilePierce = 35
+        this.projectilePierce = 25
         this.projectileDamage = 1
         this.projectileLifespan = 90
         this.projectileSize = 10
-        this.explosionSize = 35
+        this.explosionSize = 30
         this.range = 45
     }
 
@@ -257,10 +310,41 @@ class BombTower extends Tower {
     }
 }
 
-export enum towerNames {
-    SHOOT="SHOOT", 
-    BOMB="BOMB", 
-    LASER="LASER"
+class MissileTower extends BombTower {
+    constructor(x = 0, y = 0) {
+        super(x, y)
+        this.fireRate = 30
+        this.projectileSpeed = 8
+        this.projectilePierce = 35
+        this.projectileDamage = 3
+        this.projectileLifespan = 240
+        this.projectileSize = 10
+        this.explosionSize = 40
+        this.range = 110
+    }
+
+    fire(): void {
+        if (this.lookingAt != null) {
+            gameSession.addProjectile(new Missile(this.x, this.y, this.theta,
+                this.projectileSpeed,
+                this.projectilePierce,
+                this.projectileDamage,
+                this.projectileLifespan,
+                this.explosionSize,
+                this.projectileSize,
+                this.lookingAt,
+                this.targeting
+
+            ))
+        }
+        audioPlayer.playAudio(audios.SHOOT)
+    }
+
+    draw() {
+        canvas.arrowDeg(this.x, this.y, this.theta, 10, 0, 3, this.color, "square")
+        canvas.arrowDeg(this.x, this.y, this.theta + Math.PI, 10, 2, 5, this.color, "square", "round")
+        canvas.strokeCircle(this.x, this.y, this.size / 2, this.color, 1)
+    }
 }
 
 class TowerGenerator {
@@ -292,8 +376,20 @@ class TowerGenerator {
     }
 }
 
+export enum towerNames {
+    SHOOT = "SHOOT",
+    BOMB = "BOMB",
+    LASER = "LASER",
+    MONKEY = "MONKEY",
+    SNIPER = "SNIPER",
+    MISSILE = "MISSILE"
+}
+
 const towerGenerator = new TowerGenerator()
 towerGenerator.addTowerData(ShootTower, 200, towerNames.SHOOT)
 towerGenerator.addTowerData(BombTower, 400, towerNames.BOMB)
 towerGenerator.addTowerData(LaserTower, 600, towerNames.LASER)
+towerGenerator.addTowerData(Monkey, 1000, towerNames.MONKEY)
+towerGenerator.addTowerData(LaserSniper, 1000, towerNames.SNIPER)
+towerGenerator.addTowerData(MissileTower, 1000, towerNames.MISSILE)
 export { towerGenerator }
