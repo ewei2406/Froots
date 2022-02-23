@@ -70,7 +70,7 @@ export class Round {
     }
 }
 const normalRounds = new Rounds();
-normalRounds.addRound(new Round().addGroup(0, 60, 10, 8));
+// normalRounds.addRound(new Round().addGroup(0, 60, 10, 8))
 normalRounds.addRound(new Round().addGroup(0, 15, 35, 1).addGroup(550, 1, 1, 2));
 normalRounds.addRound(new Round().addGroup(0, 8, 35, 2));
 normalRounds.addRound(new Round().addGroup(0, 10, 15, 2).addGroup(200, 10, 15, 2).addGroup(400, 10, 15, 2));
