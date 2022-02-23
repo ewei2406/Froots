@@ -12,6 +12,8 @@ class GameModeRounds {
         return this.gameModeRounds[gameMode];
     }
 }
+// awdawdawd
+// awdwad
 export class Rounds {
     constructor() {
         this.length = 0;
