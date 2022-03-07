@@ -20,10 +20,10 @@ A Retro-themed tower defense game!
 - Fast-forward
 
 <p>
-  <img src="./assets/Demo1.png" width="300">
-  <img src="./assets/Demo2.png" width="300">
-  <img src="./assets/Demo3.png" width="300">
-  <img src="./assets/Demo4.png" width="300">
+  <img src="./assets/Demo1.png" width="500">
+  <img src="./assets/Demo2.png" width="500">
+  <img src="./assets/Demo3.png" width="500">
+  <img src="./assets/Demo4.png" width="500">
 </p>
 
 
