@@ -34,21 +34,24 @@ This project was inspired by Bloons Tower Defense, a game I loved as a child (an
 
 <p>
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="50px"/>
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="50px"/>
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="50px" />
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" width="50px"/>
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="50px"/>
 </p>
 
 
 | Frontend |
 |---       |
 | Typescript    |
-| Github-Pages    |
 
 | Backend |
 |---       |
 | Node.js    |
 | Express    |
+
+| DevOps |
+|---       |
+| Github-Pages    |
 
 # Local Development
 
