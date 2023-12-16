@@ -5,7 +5,7 @@
 A Retro-themed tower defense game!
 
 <h1 align="center">
-    <a href="https://github.com/ewei2406/Froots/deployments/activity_log?environment=github-pages"><img src="./assets/OpenApp.png" alt="Open App" width="150"></a>
+    <a href="https://ewei2406.github.io/Froots/"><img src="./assets/OpenApp.png" alt="Open App" width="150"></a>
 </h1>
 
 # Features
